@@ -1,7 +1,7 @@
 import os
 import re
 from samsara import server
-from samsara.util import xml
+from samsara.xml import context as xmlctx
 
 diary_match_re = re.compile(r"^diary/(\d{4})/(\d{2})/(\d{2})/$")
 
@@ -26,9 +26,9 @@ class DiaryHandler(server.HandlerClass):
         style = self.day_xsl
 
         # Render the page
-        db = xml.parseFile(self.diary)
+        db = xmlctx.parseFile(self.diary)
         try:
-            doc = xml.applyStylesheet(db, style, params)
+            doc = xmlctx.applyStylesheet(db, style, params)
             doc.setBase(os.path.join(self.root, r.uri, "index.xml"))
 
         finally:

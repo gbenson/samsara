@@ -2,7 +2,6 @@ import os
 import glob
 import urlparse
 import posixpath
-from samsara.util import xml
 from samsara.util import extractlinks
 
 class NotFoundError(Exception):

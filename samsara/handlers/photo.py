@@ -1,7 +1,7 @@
 import os
 import re
 from samsara import server
-from samsara.util import xml
+from samsara.xml import context as xmlctx
 
 photo_match_re = re.compile(
     r"^photos/films/((\d{3})/(((\d{2})/)([\w-]+-\5\.(\d)\.jpg)?)?)?$")
@@ -38,9 +38,9 @@ class PhotoHandler(server.HandlerClass):
             params = {}
 
         # Render the page
-        db = xml.parseFile(self.photodb)
+        db = xmlctx.parseFile(self.photodb)
         try:
-            doc = xml.applyStylesheet(db, style, params)
+            doc = xmlctx.applyStylesheet(db, style, params)
             doc.setBase(os.path.join(self.root, r.uri, "index.xml"))
 
         finally:

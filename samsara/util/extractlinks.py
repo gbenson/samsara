@@ -1,7 +1,7 @@
 import re
 import posixpath
 import urlparse
-from samsara.util import xml
+from samsara.xml import sax
 
 def cssExtractLinks(css):
     """Extract URLs from some CSS
@@ -30,7 +30,7 @@ def htmlExtractLinks(html):
 
     The URLs are not guaranteed to be unique.
     """
-    class Parser(xml.SAXCallback):
+    class Parser(sax.SAXCallback):
         def __init__(self, type):
             self.type = type
             self.style = None
@@ -85,9 +85,9 @@ def htmlExtractLinks(html):
         def error(self, msg):
             # HTML is allowed to be broken
             if self.type != "HTML":
-                xml.SAXCallback.error(self, msg)
+                sax.SAXCallback.error(self, msg)
 
     if html[:5] == "<?xml":
-        return xml.saxParseXML(html, Parser("XML")).hrefs
+        return sax.parseXML(html, Parser("XML")).hrefs
     else:
-        return xml.saxParseHTML(html, Parser("HTML")).hrefs
+        return sax.parseHTML(html, Parser("HTML")).hrefs

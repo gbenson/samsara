@@ -2,7 +2,7 @@ import os
 import time
 import libxml2
 from samsara import server
-from samsara.util import xml
+from samsara.xml import context as xmlctx
 from samsara.util import guesstype
 from samsara.util import date
 
@@ -168,7 +168,7 @@ class DirHandler(server.HandlerClass):
 
         header = os.path.join(path, "HEADER.html")
         if os.access(header, os.F_OK):
-            html = xml.parseFile(header).children
+            html = xmlctx.parseFile(header).children
             while html:
                 if html.name == "html":
                     node = html.children

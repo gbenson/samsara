@@ -1,7 +1,6 @@
 import types
 import libxml2
 import libxslt
-import cStringIO as StringIO
 from samsara.util import intercept
 from samsara import xpathext
 
@@ -80,59 +79,3 @@ namespace = "http://inauspicious.org/samsara"
 for f in filter(lambda i: type(getattr(xpathext, i)) == types.FunctionType,
                 filter(lambda i: i[:2] != "__", dir(xpathext))):
     libxslt.registerExtModuleFunction(f, namespace, getattr(xpathext, f))
-
-# Functions to parse XML using SAX
-
-class SAXCallback:
-    """Base class for SAX handlers
-    """
-    def warning(self, msg):
-        raise XMLError, msg
-
-    def error(self, msg):
-        raise XMLError, msg
-
-    def fatalError(self, msg):
-        raise XMLError, msg
-
-chunksize = 1024
-
-def __parseFileObject(file, handler, path, what):
-    """Parse a file or file-like object using SAX
-    """
-    ctxt = None
-
-    while 1:
-        chunk = file.read(chunksize)
-        if len(chunk) == 0:
-            break
-
-        if not ctxt:
-            if what == "XML":
-                ctxt = libxml2.createPushParser(handler, chunk,
-                                                len(chunk), path)
-                parseChunk = libxml2.parserCtxt.parseChunk
-            elif what == "HTML":
-                ctxt = libxml2.htmlCreatePushParser(handler, chunk,
-                                                    len(chunk), path)
-                parseChunk = libxml2.htmlParseChunk
-            else:
-                raise RuntimeError, "unknown document type '%s'" % what
-            
-        else:
-            parseChunk(ctxt, chunk, len(chunk), 0)
-
-    if ctxt:
-        parseChunk(ctxt, "", 0, 1)
-
-    return handler
-
-def saxParseXML(mem, handler, uri="<RAM>"):
-    """Parse a block of memory as XML using SAX
-    """
-    return __parseFileObject(StringIO.StringIO(mem), handler, uri, "XML")
-
-def saxParseHTML(mem, handler, uri="<RAM>"):
-    """Parse a block of memory as HTML using SAX
-    """
-    return __parseFileObject(StringIO.StringIO(mem), handler, uri, "HTML")

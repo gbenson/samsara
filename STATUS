@@ -22,5 +22,6 @@ DONE:
  - samsara.handlers.dir
  - samsara.handlers.file
  - samsara.util.guesstype
- - samsara.util.xml
+ - samsara.xml.context
+ - samsara.xml.sax
  - samsara.httpserver
