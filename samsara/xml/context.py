@@ -13,64 +13,66 @@ class XMLError(Exception):
     """
     pass
 
-# Function to parse XML and build a DOM tree
-
-def parseFile(path):
-    """Parse an XML file and build a tree
+class XMLContext:
+    """A manipulator of XML data
     """
-    doc, errors = intercept.intercept(STREAMS, libxml2.parseFile, path)
-    if doc is None or errors:
-        raise XMLError, errors + "error: can't load %s" % path
-    return doc
 
-# Functions to apply XSLT stylesheets to DOM trees
+    def parseFile(self, path):
+        """Parse an XML file and build a tree
+        """
+        doc, errors = intercept.intercept(STREAMS, libxml2.parseFile, path)
+        if doc is None or errors:
+            raise XMLError, errors + "error: can't load %s" % path
+        return doc
 
-def __parseXSLFile(path):
-    """Parse an XSLT stylesheet building the associated structures
-    """
-    doc = parseFile(path)
-    style, errors = intercept.intercept(STREAMS,
-                                        libxslt.parseStylesheetDoc, doc)
-    if style is None or errors:
-        raise XMLError, errors + "error: can't load %s" % path
-    return style
+    def __parseXSLFile(self, path):
+        """Parse an XSLT stylesheet building the associated structures
+        """
+        doc = self.parseFile(path)
+        style, errors = intercept.intercept(STREAMS,
+                                            libxslt.parseStylesheetDoc, doc)
+        if style is None or errors:
+            raise XMLError, errors + "error: can't load %s" % path
+        return style
 
-def __applyStylesheet(doc, style, params):
-    """The core of applyStylesheet and applyStylesheetPI
-    """
-    params = params.copy()
-    for param in params.keys():
-        if (type(params[param]) != types.InstanceType or
-            not isinstance(params[param], libxml2.xmlNode)):
-            params[param] = "'" + str(params[param]) + "'"
+    def __applyStylesheet(self, doc, style, params):
+        """The core of applyStylesheet and applyStylesheetPI
+        """
+        params = params.copy()
+        for param in params.keys():
+            if (type(params[param]) != types.InstanceType or
+                not isinstance(params[param], libxml2.xmlNode)):
+                params[param] = "'" + str(params[param]) + "'"
 
-    result, errors = intercept.intercept(STREAMS,
-                                         style.applyStylesheet, doc, params)
-    if result is None or errors:
-        raise XMLError, errors + "error: can't apply stylesheet"
-    return result
+        result, errors = intercept.intercept(STREAMS,
+                                             style.applyStylesheet,
+                                             doc, params)
+        if result is None or errors:
+            raise XMLError, errors + "error: can't apply stylesheet"
+        return result
 
-def applyStylesheet(doc, path, params = {}):
-    """Apply an XSLT stylesheet to a document.
-    """
-    style = __parseXSLFile(path)
+    def applyStylesheet(self, doc, path, params = {}):
+        """Apply an XSLT stylesheet to a document.
+        """
+        style = self.__parseXSLFile(path)
 
-    try:
-        return __applyStylesheet(doc, style, params)
-    finally:
-        style.freeStylesheet()
+        try:
+            return self.__applyStylesheet(doc, style, params)
+        finally:
+            style.freeStylesheet()
 
-def applyStylesheetPI(doc, params = {}):
-    """Apply an XSLT stylesheet (referenced in a PI) to a document.
-    """
-    style, errors = intercept.intercept(STREAMS, libxslt.loadStylesheetPI, doc)
-    if style is None or errors:
-        raise XMLError, errors + "error: can't load stylesheet"
+    def applyStylesheetPI(self, doc, params = {}):
+        """Apply an XSLT stylesheet (referenced in a PI) to a document.
+        """
+        style, errors = intercept.intercept(STREAMS,
+                                            libxslt.loadStylesheetPI, doc)
+        if style is None or errors:
+            raise XMLError, errors + "error: can't load stylesheet"
 
-    try:
-        return __applyStylesheet(doc, style, params)
-    finally:
-        style.freeStylesheet()
+        try:
+            return self.__applyStylesheet(doc, style, params)
+        finally:
+            style.freeStylesheet()
 
 # XPath extension functions
 

@@ -47,6 +47,7 @@ class TestApplyStylesheet(unittest.TestCase):
     def setUp(self):
         self.sspath = tempfile.mktemp()
         self.doc = libxml2.parseDoc(document)
+        self.xmlctx = context.XMLContext()
 
     def tearDown(self):
         self.doc.freeDoc()
@@ -54,7 +55,7 @@ class TestApplyStylesheet(unittest.TestCase):
     
     def doTest(self, doc, stylesheet):
         open(self.sspath, "w").write(stylesheet)
-        res = context.applyStylesheet(doc, self.sspath)
+        res = self.xmlctx.applyStylesheet(doc, self.sspath)
         try:
             out = tempfile.mktemp()
             try:
@@ -83,6 +84,7 @@ class TestApplyStylesheetPI(unittest.TestCase):
         self.sspath = tempfile.mktemp()
         self.doc = libxml2.parseDoc(documentPI % self.sspath)
         self.borkdoc = libxml2.parseDoc(documentPI % "/where/is/it")
+        self.xmlctx = context.XMLContext()
 
     def tearDown(self):
         self.doc.freeDoc()
@@ -91,7 +93,7 @@ class TestApplyStylesheetPI(unittest.TestCase):
     
     def doTest(self, doc, stylesheet):
         open(self.sspath, "w").write(stylesheet)
-        res = context.applyStylesheetPI(doc)
+        res = self.xmlctx.applyStylesheetPI(doc)
         try:
             out = tempfile.mktemp()
             try:

@@ -76,9 +76,11 @@ class SamsaraServer:
     def __init__(self, root):
         self.root = os.path.abspath(root)
 
+        xmlctx = context.XMLContext()
+
         handlers = map(self.__importHandler, self.__listHandlers())
         handlers.sort(lambda a, b: b.priority - a.priority)
-        self.handlers = map(lambda s: s(self.root, context), handlers)
+        self.handlers = map(lambda s: s(self.root, xmlctx), handlers)
 
     def __listHandlers(self):
         """Return a list of handler modules

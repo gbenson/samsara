@@ -21,7 +21,7 @@ class TestCase(unittest.TestCase):
 
     def setUp(self):
         self.dir = os.path.join(test_dir, self.dir)
-        self.handler = self.handler(self.dir, context)
+        self.handler = self.handler(self.dir, context.XMLContext())
         for file in self.mtimes.keys():
             path = os.path.join(self.dir, file)
             if os.path.exists(path):
