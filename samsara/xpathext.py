@@ -24,7 +24,7 @@ def permalink(ctx, nodeset):
 
     return "".join(words)
 
-def prettydate(ctx, nodeset):
+def __format_date(ctx, nodeset, format):
     """Prettify the timestamp on a diary entry
     """
     [node] = nodeset
@@ -36,16 +36,23 @@ def prettydate(ctx, nodeset):
     stamp = stamp[:-1] + ({time.tzname[0]: 0, time.tzname[1]: 1}[zone],)
 
     date = stamp[2]
-    day = time.strftime("%A", stamp)
-    mon_yr = time.strftime("%B %Y", stamp)
-
     ten, unit = date/10, date%10
     if ten != 1 and unit>0 and unit<4:
         ordinal = ["st", "nd", "rd"][unit - 1]
     else:
         ordinal = "th"
 
-    return "%s %d%s %s" % (day, date, ordinal, mon_yr)
+    return time.strftime(format, stamp).replace("%o", "%d%s" % (date, ordinal))
+
+def prettydate(ctx, nodeset, frumpy=0):
+    """Prettify the timestamp on a diary entry
+    """
+    return __format_date(ctx, nodeset, "%A %o %B %Y")
+
+def frumpydate(ctx, nodeset):
+    """Prettify the timestamp on a diary entry
+    """
+    return __format_date(ctx, nodeset, "%o %B %Y")
 
 def calendar(ctx, nodeset):
     """Create the body of a Manila-like calendar from a set of diary entries

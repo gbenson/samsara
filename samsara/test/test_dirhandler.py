@@ -19,7 +19,7 @@ standalone=true
           TEXT
             content=/
         TEXT
-          content=inauspicious.org
+          content=Home
     ELEMENT style
       TEXT
         content=style/index.css
@@ -76,7 +76,7 @@ standalone=true
           TEXT
             content=/
         TEXT
-          content=inauspicious.org
+          content=Home
     ELEMENT style
       TEXT
         content=style/index.css
@@ -117,7 +117,7 @@ standalone=true
           TEXT
             content=/
         TEXT
-          content=inauspicious.org
+          content=Home
     ELEMENT style
       TEXT
         content=style/index.css
@@ -184,7 +184,7 @@ standalone=true
           TEXT
             content=/
         TEXT
-          content=inauspicious.org
+          content=Home
       ELEMENT a
         ATTRIBUTE href
           TEXT
@@ -228,7 +228,7 @@ standalone=true
           TEXT
             content=/
         TEXT
-          content=inauspicious.org
+          content=Home
       ELEMENT a
         ATTRIBUTE href
           TEXT

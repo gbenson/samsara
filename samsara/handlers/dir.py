@@ -164,7 +164,7 @@ class DirHandler(server.HandlerClass):
         page.newChild(None, "title", "Index of %s" % absolute)
 
         location = page.newChild(None, "location", None)
-        anchor = location.newChild(None, "a", "inauspicious.org")
+        anchor = location.newChild(None, "a", "Home")
         anchor.setProp("href", "/")
         if uri:
             total_uri = ""
