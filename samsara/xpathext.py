@@ -144,8 +144,12 @@ def entityencode(ctx, nodeset):
                 output += "<%s" % node.name
                 attr = node.properties
                 while attr:
-                    output += ' %s="%s"' % (attr.name,
-                                            encodeText(node.prop(attr.name)))
+                    value = node.prop(attr.name)
+                    # HACK: bah, RSS parsers don't seem to honour URL bases
+                    if node.name == "a" and attr.name == "href" \
+                           and value[0] == "/":
+                        value = "http://inauspicious.org" + value
+                    output += ' %s="%s"' % (attr.name, encodeText(value))
                     attr = attr.next
                 if node.children:
                     output += ">"
