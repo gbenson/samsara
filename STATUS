@@ -1,12 +1,10 @@
 Improvements
 ============
  - try using mmap in the FileHandler for speed
- - write the diary generator (duh!)
- - hack it about such that the diary generator can be run
-   independantly (on a different machine probably).
 
 Unit Tests
 ==========
+ - samsara.handlers.diary
  - samsara.handlers.markup
  - samsara.handlers.photo
  - samsara.util.intercept
