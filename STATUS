@@ -1,5 +1,9 @@
 Improvements
 ============
+ - refactor the two bits that hold a cache of modules (server and
+   xml.context) into a new module, util.modulecache or something.
+ - parts of handlers.dir are fairly inauspicious.org specific; sort
+   something out about it.
  - make xml.context cache documents during spidering for speed.
  - try using mmap in the FileHandler for speed
  - move __strptime from the various XPath extensions into util.date.
@@ -8,9 +12,7 @@ Improvements
 
 Unit Tests
 ==========
- - samsara.handlers.diary
  - samsara.handlers.markup
- - samsara.handlers.photo
  - samsara.util.intercept
  - samsara.util.extractlinks
  - samsara.util.date
