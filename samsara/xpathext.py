@@ -63,9 +63,7 @@ daynames = ("Sunday", "Monday", "Tuesday", "Wednesday",
 monthnames = ("January", "February", "March", "April", "May", "June",
               "July", "August", "September", "October", "November", "December")
 
-# HACK: the arguments should be the other way round; this works around
-# a bug in libxml2/libxslt/wherever
-def calendar(ctx, today, next, prev, stamps):
+def calendar(ctx, stamps, prev, next, today):
     """Create the body of a Manila-like calendar from a set of diary entries
     """
     stamps, prev, next, today = map(lambda l: map(
