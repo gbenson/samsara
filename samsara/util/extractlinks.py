@@ -52,6 +52,8 @@ def htmlExtractLinks(html):
         def startElement(self, tag, attrs):
             if self.style is not None:
                 raise HTMLError, "<%s> within <style>" % tag
+            if attrs is None:
+                attrs = {}
 
             if tag == "base" and attrs.has_key("href"):
                 scheme, netloc, path = urlparse.urlparse(attrs["href"])[:3]
