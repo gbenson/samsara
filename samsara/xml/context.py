@@ -81,6 +81,22 @@ class XMLContext:
         finally:
             style.freeStylesheet()
 
+    def copyNode(self, src, dst):
+        if src.type == "element":
+            dst = dst.newChild(None, src.name, None)
+            node = src.properties
+            while node:
+                dst.setProp(node.name, node.content)
+                node = node.next
+            node = src.children
+            while node:
+                self.copyNode(node, dst)
+                node = node.next
+        elif src.type == "text":
+            dst.addContent(src.content)
+        else:
+            raise XMLError, "unhandled node type '%s'" % src.type
+
 class XPathContext(loader.Loader):
     """Handle XPath extension functions
 
