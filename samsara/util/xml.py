@@ -1,3 +1,4 @@
+import re
 import types
 import libxml2
 import libxslt
@@ -71,6 +72,28 @@ def applyStylesheetPI(doc, params = {}):
         return __applyStylesheet(doc, style, params)
     finally:
         style.freeStylesheet()
+
+# XPath extension functions
+
+namespace = "http://inauspicious.org/samsara"
+
+# removes leading and trailing space, leading digits, and bracketed stuff
+pl_cleanup_re = re.compile(r"^\s*[\d.]*\s*(.*?)\s*([([{<].*)?\s*$")
+
+def permalink(ctx, nodeset):
+    """Translate some arbitrary text into something suitable for a fragment
+    """
+    [node] = nodeset
+    text = libxml2.xmlNode(_obj=node).getContent()
+
+    words = map(lambda w: w.lower(),
+                filter(lambda c: c.isalnum() or c.isspace(),
+                       pl_cleanup_re.sub(r"\1", text)).split())
+    words = [words[0]] + map(lambda w: w.capitalize(), words[1:])
+
+    return "".join(words)
+
+libxslt.registerExtModuleFunction("permalink", namespace, permalink)
 
 # Functions to parse XML using SAX
 
