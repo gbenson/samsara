@@ -33,7 +33,7 @@ def sitecopy(database, root, site, partial = 0, auto = 0, restrict = None):
         if status == 0:
             return
         if status != 1:
-            raise SitecopyError, "sitecopy failed with exit code %d" % status
+            raise SitecopyError, output[:-1]
 
         status = {"added": [], "changed": [], "deleted": [], "moved": []}
         
