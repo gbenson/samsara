@@ -24,16 +24,20 @@ def permalink(ctx, nodeset):
 
     return "".join(words)
 
-def __format_date(ctx, nodeset, format):
-    """Prettify the timestamp on a diary entry
+def __strptime(stamp):
+    """Make a 9-tuple from the timestamp on a diary entry
     """
-    [node] = nodeset
-    stamp = libxml2.xmlNode(_obj=node).getContent()
-
     # XXX strptime() doesn't understand %Z :(
     zone = stamp[-3:]
     stamp = time.strptime(stamp, "%Y-%m-%d %H:%M:%S " + zone)
     stamp = stamp[:-1] + ({time.tzname[0]: 0, time.tzname[1]: 1}[zone],)
+    return stamp
+
+def __format_date(ctx, nodeset, format):
+    """Prettify the timestamp on a diary entry
+    """
+    [node] = nodeset
+    stamp = __strptime(libxml2.xmlNode(_obj=node).getContent())
 
     date = stamp[2]
     ten, unit = date/10, date%10
@@ -54,23 +58,43 @@ def frumpydate(ctx, nodeset):
     """
     return __format_date(ctx, nodeset, "%o %B %Y")
 
-def calendar(ctx, nodeset):
+daynames = ("Sunday", "Monday", "Tuesday", "Wednesday",
+            "Thursday", "Friday", "Saturday")
+monthnames = ("January", "February", "March", "April", "May", "June",
+              "July", "August", "September", "October", "November", "December")
+
+# HACK: the arguments should be the other way round; this works around
+# a bug in libxml2/libxslt/wherever
+# ALSO HACK: a number of things in here are to replicate _exactly_ the
+# outptu of the old XSLT-based calendar and should be removed the next
+# time everything gets pushed
+def calendar(ctx, next, prev, stamps):
     """Create the body of a Manila-like calendar from a set of diary entries
     """
-    stamps = map(lambda n: libxml2.xmlNode(_obj=n).prop("date"), nodeset)
+    stamps, prev, next = map(lambda l: map(
+        lambda n: __strptime(libxml2.xmlNode(_obj=n).getContent()), l),
+        (stamps, prev, next))
 
     # Extract the dates from the supplied nodeset
-    yrmon = stamps[0][:7]
-    if map(lambda s: s[:7], stamps) != [yrmon] * len(stamps):
-        raise RuntimeError, "more than one month's worth of entries"
-    year, month = map(int, (yrmon[:4], yrmon[5:7]))
-    days = map(lambda s: int(s[8:10]), stamps)
+    year, month = stamps[0][:2]
+    days = map(lambda s: s[2], stamps)
 
     # Find the insertion node of the output document
     tctxt = libxslt.xpathParserContext(_obj=ctx).context().transformContext()
-    table = tctxt.insertNode()
+    inode = tctxt.insertNode()
 
     # Insert a calendar
+    inode.addContent("\n")   # HACK: remove
+    table = inode.newChild(None, "table", None)
+    table.setProp("id", "calendar")
+    table.setProp("summary", "Monthly calendar with links to each day's posts")
+    table.newChild(None, "caption", time.strftime("%B %Y", stamps[0]))
+
+    row = table.newChild(None, "tr", None)
+    for day in daynames:
+        cell = row.newChild(None, "th", day[:2])
+        cell.setProp("abbr", day)
+
     cal.setfirstweekday(cal.SUNDAY)
     for week in cal.monthcalendar(year, month):
         row = table.newChild(None, "tr", None)
@@ -82,6 +106,25 @@ def calendar(ctx, nodeset):
             else:
                 cell = row.newChild(None, "td", None)
                 link = cell.newTextChild(None, "a", str(day))
-                link.setProp("href", "../%02d/" % day)
+                link.setProp("href", "../%02d/" % day)  # HACK: make absolute
 
+    row = table.newChild(None, "tr", None)
+    cell = row.newChild(None, "td", None)
+    cell.setProp("colspan", "7")
+    if prev:
+        link = cell.newChild(None, "a", "\n" + " " * 20 +  # HACK: remove
+                             time.strftime("&#171;%B", prev[0]))
+        link.setProp("href", time.strftime("/diary/%Y/%m/%d/", prev[0]))
+    else:
+        cell.addContent(monthnames[(month + 10) % 12])
+
+    cell.addContent(" ")
+    if next:
+        link = cell.newChild(None, "a", time.strftime("%B&#187;", next[0]) +
+                             "\n" + " " * 18) # HACK: remove
+        link.setProp("href", time.strftime("/diary/%Y/%m/%d/", next[0]))
+    else:
+        cell.addContent(monthnames[month % 12])
+
+    inode.addContent("\n")   # HACK: remove
     return ""
