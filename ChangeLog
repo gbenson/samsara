@@ -1,3 +1,9 @@
+2002-12-21 14:09  gary
+
+	* STATUS (1.18), samsara/xml/xpath.py (1.1):
+	
+	Add some utility functions to avoid some more cryptic libxml2 stuff
+
 2002-12-20 20:35  gary
 
 	* STATUS (1.17):
