@@ -139,7 +139,8 @@ def entityencode(ctx, nodeset):
                 while attr:
                     value = node.prop(attr.name)
                     # HACK: bah, RSS parsers don't seem to honour URL bases
-                    if node.name == "a" and attr.name == "href" \
+                    if (node.name == "a" and attr.name == "href" or
+                        node.name == "img" and attr.name == "src") \
                            and value[0] == "/":
                         value = "http://inauspicious.org" + value
                     output += ' %s="%s"' % (attr.name, encodeText(value))
