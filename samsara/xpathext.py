@@ -65,9 +65,6 @@ monthnames = ("January", "February", "March", "April", "May", "June",
 
 # HACK: the arguments should be the other way round; this works around
 # a bug in libxml2/libxslt/wherever
-# ALSO HACK: a number of things in here are to replicate _exactly_ the
-# outptu of the old XSLT-based calendar and should be removed the next
-# time everything gets pushed
 def calendar(ctx, today, next, prev, stamps):
     """Create the body of a Manila-like calendar from a set of diary entries
     """
@@ -85,7 +82,6 @@ def calendar(ctx, today, next, prev, stamps):
     inode = tctxt.insertNode()
 
     # Insert a calendar
-    inode.addContent("\n")   # HACK: remove
     table = inode.newChild(None, "table", None)
     table.setProp("id", "calendar")
     table.setProp("summary", "Monthly calendar with links to each day's posts")
@@ -110,25 +106,24 @@ def calendar(ctx, today, next, prev, stamps):
             else:
                 cell = row.newChild(None, "td", None)
                 link = cell.newTextChild(None, "a", str(day))
-                link.setProp("href", "../%02d/" % day)  # HACK: make absolute
+                link.setProp("href", "/diary/%04d/%02d/%02d/" % (year,
+                                                                 month,
+                                                                 day))
 
     row = table.newChild(None, "tr", None)
     cell = row.newChild(None, "td", None)
     cell.setProp("colspan", "7")
     if prev:
-        link = cell.newChild(None, "a", "\n" + " " * 20 +  # HACK: remove
-                             time.strftime("&#171;%B", prev[0]))
+        link = cell.newChild(None, "a", time.strftime("&#171;%B", prev[0]))
         link.setProp("href", time.strftime("/diary/%Y/%m/%d/", prev[0]))
     else:
         cell.addContent(monthnames[(month + 10) % 12])
 
     cell.addContent(" ")
     if next:
-        link = cell.newChild(None, "a", time.strftime("%B&#187;", next[0]) +
-                             "\n" + " " * 18) # HACK: remove
+        link = cell.newChild(None, "a", time.strftime("%B&#187;", next[0]))
         link.setProp("href", time.strftime("/diary/%Y/%m/%d/", next[0]))
     else:
         cell.addContent(monthnames[month % 12])
 
-    inode.addContent("\n")   # HACK: remove
     return ""
