@@ -1,0 +1,68 @@
+#!/usr/bin/env python
+
+### Preamble: allow this program to be run without PYTHON_PATH abuse
+import sys, os
+samsara_dir = os.path.split(os.path.split(os.path.abspath(sys.argv[0]))[0])[0]
+if samsara_dir not in sys.path:
+    sys.path.insert(0, samsara_dir)
+### end of preamble
+
+from getopt import getopt, GetoptError
+from inauspicious import sitecopy
+
+partial  = 0
+auto     = 0
+restrict = {"added":    0,
+            "deleted": 0,
+            "moved":   0,
+            "changed": 0}
+
+usage = """\
+Usage: server [OPTION] DATABASE ROOT SITE
+
+  -p, --partial           perform a partial push (default: don't)
+  -a, --automatic         perform an automatic push (default: don't)
+  -A  --allow-adds=NUM    allow at most NUM adds in auto mode (default %d)
+  -D  --allow-deletes=NUM allow at most NUM deletes in auto mode (default %d)
+  -M  --allow-moves=NUM   allow at most NUM moves in auto mode (default %d)
+  -C  --allow-changes=NUM allow at most NUM changes in auto mode (default %d)
+      --help              display this help and exit
+""" % (restrict["added"],  restrict["deleted"],
+       restrict["moved"], restrict["changed"])
+
+try:
+    opts, args = getopt(sys.argv[1:], "paA:D:M:C:",
+                        ["help", "partial", "automatic", "allow-adds=",
+                         "allow-deletes", "allow-moves", "allow-changes"])
+except GetoptError:
+    print usage
+    sys.exit(1)
+
+if len(args) != 3:
+    print usage
+    sys.exit(1)
+[database, root, site] = args
+
+for o, a in opts:
+    if o == "--help":
+        print usage
+        sys.exit()
+    if o in ("-p", "--partial"):
+        partial = 1
+    if o in ("-a", "--auto"):
+        auto = 1
+    if o in ("-A", "--allow-adds"):
+        restrict["added"] = a
+    if o in ("-D", "--allow-deletes"):
+        restrict["deleted"] = a
+    if o in ("-M", "--allow-moves"):
+        restrict["moved"] = a
+    if o in ("-C", "--allow-changes"):
+        restrict["changed"] = a
+
+try:
+    sitecopy.sitecopy(database, root, site, partial, auto, restrict)
+
+except sitecopy.SitecopyError, e:
+    print >>sys.stderr, e
+    sys.exit(1)
