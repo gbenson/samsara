@@ -162,6 +162,9 @@ def entityencode(ctx, nodeset):
             node = node.next
         return output
 
-    return reduce(lambda x, y: x + y,
-                  map(lambda n: encodeNodeset(libxml2.xmlNode(_obj=n)),
-                      nodeset))
+    # HACK: don't know if this is valid but it does the trick
+    return encodeNodeset(libxml2.xmlNode(_obj=nodeset[0]))
+    # This is broken; should be encodeNode() instead:
+    #return reduce(lambda x, y: x + y,
+    #              map(lambda n: encodeNodeset(libxml2.xmlNode(_obj=n)),
+    #                  nodeset))
