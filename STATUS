@@ -1,7 +1,5 @@
 Improvements
 ============
- - parts of handlers.dir are fairly inauspicious.org specific; sort
-   something out about it.
  - make xml.context cache documents during spidering for speed.
  - try using mmap in the FileHandler for speed
  - move __strptime from the various XPath extensions into util.date.

@@ -3,278 +3,44 @@ from samsara.handlers import dir
 
 # Expected directory indexes
 css_index = """\
-DOCUMENT
-version=1.0
-URL=%s/index.xml
-standalone=true
-  PI xml-stylesheet
-    content=href=\"style/index.xsl\" type=\"text/xsl\"
-  ELEMENT page
-    ELEMENT title
-      TEXT
-        content=Index of /
-    ELEMENT location
-      ELEMENT a
-        ATTRIBUTE href
-          TEXT
-            content=/
-        TEXT
-          content=Home
-    ELEMENT style
-      TEXT
-        content=style/index.css
-    ELEMENT content
-      ELEMENT index
-        ELEMENT entry
-          ELEMENT date
-            TEXT
-              content=2nd May 2002
-          ELEMENT icon
-            TEXT
-              content=generic
-          ELEMENT type
-            TEXT
-              content=text/css
-          ELEMENT name
-            TEXT
-              content=index.css
-          ELEMENT size
-            TEXT
-              content=10b
-        ELEMENT entry
-          ELEMENT date
-            TEXT
-              content=1st May 2002
-          ELEMENT icon
-            TEXT
-              content=generic
-          ELEMENT type
-            TEXT
-              content=text/xml
-          ELEMENT name
-            TEXT
-              content=other.xml
-          ELEMENT size
-            TEXT
-              content=13b
+<html><head><title>Index of /</title><body><h1>Index of /</h1><ul>
+<li><a href="index.css">index.css</a></li>
+<li><a href="other.xml">other.xml</a></li>
+</ul></body></html>
 """
 
 no_index = """\
-DOCUMENT
-version=1.0
-URL=%s/index.xml
-standalone=true
-  PI xml-stylesheet
-    content=href=\"style/index.xsl\" type=\"text/xsl\"
-  ELEMENT page
-    ELEMENT title
-      TEXT
-        content=Index of /
-    ELEMENT location
-      ELEMENT a
-        ATTRIBUTE href
-          TEXT
-            content=/
-        TEXT
-          content=Home
-    ELEMENT style
-      TEXT
-        content=style/index.css
-    ELEMENT content
-      ELEMENT index
-        ELEMENT entry
-          ELEMENT date
-            TEXT
-              content=1st May 2002
-          ELEMENT icon
-            TEXT
-              content=generic
-          ELEMENT type
-            TEXT
-              content=text/xml
-          ELEMENT name
-            TEXT
-              content=other.xml
-          ELEMENT size
-            TEXT
-              content=13b
+<html><head><title>Index of /</title><body><h1>Index of /</h1><ul>
+<li><a href="other.xml">other.xml</a></li>
+</ul></body></html>
 """
 
 dir_index = """\
-DOCUMENT
-version=1.0
-URL=%s/index.xml
-standalone=true
-  PI xml-stylesheet
-    content=href=\"style/index.xsl\" type=\"text/xsl\"
-  ELEMENT page
-    ELEMENT title
-      TEXT
-        content=Index of /
-    ELEMENT location
-      ELEMENT a
-        ATTRIBUTE href
-          TEXT
-            content=/
-        TEXT
-          content=Home
-    ELEMENT style
-      TEXT
-        content=style/index.css
-    ELEMENT content
-      ELEMENT index
-        ELEMENT entry
-          ELEMENT date
-            TEXT
-              content=5th May 2002
-          ELEMENT type
-            TEXT
-              content=directory
-          ELEMENT name
-            TEXT
-              content=nested/
-          ELEMENT icon
-            TEXT
-              content=folder
-        ELEMENT entry
-          ELEMENT date
-            TEXT
-              content=3rd May 2002
-          ELEMENT type
-            TEXT
-              content=directory
-          ELEMENT name
-            TEXT
-              content=dir/
-          ELEMENT icon
-            TEXT
-              content=folder
-        ELEMENT entry
-          ELEMENT date
-            TEXT
-              content=4th May 2002
-          ELEMENT icon
-            TEXT
-              content=text
-          ELEMENT type
-            TEXT
-              content=text/plain
-          ELEMENT name
-            TEXT
-              content=file
-          ELEMENT size
-            TEXT
-              content=5b
+<html><head><title>Index of /</title><body><h1>Index of /</h1><ul>
+<li><a href="dir/">dir/</a></li>
+<li><a href="file">file</a></li>
+<li><a href="nested/">nested/</a></li>
+</ul></body></html>
 """
 
 nested_index = """\
-DOCUMENT
-version=1.0
-URL=%s/index.xml
-standalone=true
-  PI xml-stylesheet
-    content=href=\"../style/index.xsl\" type=\"text/xsl\"
-  ELEMENT page
-    ELEMENT title
-      TEXT
-        content=Index of /nested/
-    ELEMENT location
-      ELEMENT a
-        ATTRIBUTE href
-          TEXT
-            content=/
-        TEXT
-          content=Home
-      ELEMENT a
-        ATTRIBUTE href
-          TEXT
-            content=/nested/
-        TEXT
-          content=nested
-    ELEMENT style
-      TEXT
-        content=../style/index.css
-    ELEMENT content
-      ELEMENT index
-        ELEMENT entry
-          ELEMENT date
-            TEXT
-              content=5th May 2002
-          ELEMENT type
-            TEXT
-              content=directory
-          ELEMENT name
-            TEXT
-              content=dir/
-          ELEMENT icon
-            TEXT
-              content=folder
+<html><head><title>Index of /nested</title><body><h1>Index of /nested</h1><ul>
+<li><a href="../">Parent Directory</a></li>
+<li><a href="dir/">dir/</a></li>
+</ul></body></html>
 """
 
 nestdir_index = """\
-DOCUMENT
-version=1.0
-URL=%s/index.xml
-standalone=true
-  PI xml-stylesheet
-    content=href=\"../../style/index.xsl\" type=\"text/xsl\"
-  ELEMENT page
-    ELEMENT title
-      TEXT
-        content=Index of /nested/dir/
-    ELEMENT location
-      ELEMENT a
-        ATTRIBUTE href
-          TEXT
-            content=/
-        TEXT
-          content=Home
-      ELEMENT a
-        ATTRIBUTE href
-          TEXT
-            content=/nested/
-        TEXT
-          content=nested
-      ELEMENT a
-        ATTRIBUTE href
-          TEXT
-            content=/nested/dir/
-        TEXT
-          content=dir
-    ELEMENT style
-      TEXT
-        content=../../style/index.css
-    ELEMENT content
-      ELEMENT index
-        ELEMENT entry
-          ELEMENT date
-            TEXT
-              content=5th May 2002
-          ELEMENT icon
-            TEXT
-              content=text
-          ELEMENT type
-            TEXT
-              content=text/plain
-          ELEMENT name
-            TEXT
-              content=file
-          ELEMENT size
-            TEXT
-              content=5b
+<html><head><title>Index of /nested/dir</title><body><h1>Index of /nested/dir</h1><ul>
+<li><a href="../">Parent Directory</a></li>
+<li><a href="file">file</a></li>
+</ul></body></html>
 """
 
 class DirTestCase(unittestsource.TestCase):
     """Base class for all directory testcases
     """
     handler = dir.DirHandler
-    mtimes = {"index.xml":       "29/04/2002",
-              "index.html":      "30/04/2002",
-              "other.xml":       "01/05/2002",
-              "index.css":       "02/05/2002",
-              "dir/index.xml":   "03/05/2002",
-              "file":            "04/05/2002",
-              "nested/dir/file": "05/05/2002"}
 
 class DirTestXMLIndex(DirTestCase):
     dir = "xmlindex"
@@ -322,7 +88,7 @@ class DirTestCSSIndex(DirTestCase):
     dir = "cssindex"
 
     def testSlashServe(self):
-        self.checkSuccess("/", "text/xml", css_index % self.dir)
+        self.checkSuccess("/", "text/html", css_index)
 
     def testIndexXmlServe(self):
         self.checkDeclined("/index.xml")
@@ -343,7 +109,7 @@ class DirTestNoIndex(DirTestCase):
     dir = "noindex"
 
     def testSlashServe(self):
-        self.checkSuccess("/", "text/xml", no_index % self.dir)
+        self.checkSuccess("/", "text/html", no_index)
 
     def testIndexXmlServe(self):
         self.checkDeclined("/index.xml")
@@ -364,7 +130,7 @@ class DirTestDirHandling(DirTestCase):
     dir = "dir"
 
     def testSlashServe(self):
-        self.checkSuccess("/", "text/xml", dir_index % self.dir)
+        self.checkSuccess("/", "text/html", dir_index)
 
     def testDirServe(self):
         self.checkRewrite("/dir/", "/dir/index.xml")
@@ -379,10 +145,10 @@ class DirTestDirHandling(DirTestCase):
         self.checkDeclined("/file/")
 
     def testNestedServe(self):
-        self.checkSuccess("/nested/", "text/xml", nested_index % self.dir)
+        self.checkSuccess("/nested/", "text/html", nested_index)
 
     def testNestedDirServe(self):
-        self.checkSuccess("/nested/dir/", "text/xml", nestdir_index % self.dir)
+        self.checkSuccess("/nested/dir/", "text/html", nestdir_index)
 
     def testNestedFileServe(self):
         self.checkDeclined("/nested/dir/file")

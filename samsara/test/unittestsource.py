@@ -17,16 +17,10 @@ debug_trim_re = re.compile("^(\s*\w+?=.{40}).*$", re.MULTILINE)
 class TestCase(unittest.TestCase):
     """Base class for all data-sourcing handler testcases
     """
-    mtimes = {}
 
     def setUp(self):
         self.dir = os.path.join(test_dir, self.dir)
         self.handler = self.handler(self.dir, context.XMLContext())
-        for file in self.mtimes.keys():
-            path = os.path.join(self.dir, file)
-            if os.path.exists(path):
-                t = time.mktime(time.strptime(self.mtimes[file], "%d/%m/%Y"))
-                os.utime(path, (t, t))
 
     def checkSuccess(self, uri, type, expected):
         """Apply a series of tests to what should be a successful request
