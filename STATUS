@@ -11,6 +11,7 @@ Unit Tests
  - samsara.handlers.photo
  - samsara.util.intercept
  - samsara.util.extractlinks
+ - samsara.util.system
  - samsara.server
   > Request [DONE]
   > Link
