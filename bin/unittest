@@ -1,0 +1,42 @@
+#!/usr/bin/env python
+
+### Preamble: allow this program to be run without PYTHON_PATH abuse
+import sys, os
+samsara_dir = os.path.split(os.path.split(os.path.abspath(sys.argv[0]))[0])[0]
+if samsara_dir not in sys.path:
+    sys.path.insert(0, samsara_dir)
+### end of preamble
+
+import unittest
+import glob
+
+class TestLoader(unittest.TestLoader):
+    """Load tests according to various criteria
+
+    This overrides the methods that are called by unittest.main() to
+    provide different behaviour, namely loading tests from the package
+    samsara.test instead of from the module __main__.
+    """
+
+    def loadTestsFromModule(self, module):
+        """Return a suite of all test cases contained in the given module
+        """
+        if module.__name__ != "__main__":
+            return unittest.TestLoader.loadTestsFromModule(self, module)
+        return self.loadTestsFromNames(
+            map(lambda p: os.path.split(p)[1][5:-3],
+                glob.glob(os.path.join(samsara_dir, "samsara",
+                                       "test", "test_*.py"))),
+            module)
+
+    def loadTestsFromNames(self, names, module=None):
+        """Return a suite of the specified test cases
+        """
+        assert module.__name__ == "__main__"
+        return unittest.TestLoader.loadTestsFromNames(
+            self,
+            map(lambda n: "samsara.test.test_" + n, names),
+            None)
+
+if __name__ == "__main__":
+    unittest.main(testLoader = TestLoader())

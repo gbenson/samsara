@@ -1,0 +1,21 @@
+Improvements
+============
+ - try using mmap in the FileHandler for speed
+
+Unit Tests
+==========
+ - samsara.handlers.markup
+ - samsara.handlers.photo
+ - samsara.util.intercept
+ - samsara.util.extractlinks
+ - samsara.server
+  > Request [DONE]
+  > Link
+  > SamsaraServer
+ - samsara.spider
+DONE:
+ - samsara.handlers.dir
+ - samsara.handlers.file
+ - samsara.util.guesstype
+ - samsara.util.xml
+ - samsara.httpserver

@@ -1,0 +1,45 @@
+#!/usr/bin/env python
+
+### Preamble: allow this program to be run without PYTHON_PATH abuse
+import sys, os
+samsara_dir = os.path.split(os.path.split(os.path.abspath(sys.argv[0]))[0])[0]
+if samsara_dir not in sys.path:
+    sys.path.insert(0, samsara_dir)
+### end of preamble
+
+from getopt import getopt, GetoptError
+from samsara.httpserver import HTTPServer
+from samsara.server import SamsaraServer
+
+interface = ""
+port = 2420
+
+usage = """\
+Usage: server [OPTION] ROOT
+
+  -i, --interface=IF    listen on the specified interface (default: all)
+  -p, --port=PORT       listen on the specified port (default: %s)
+      --help            display this help and exit
+""" % port
+
+try:
+    opts, args = getopt(sys.argv[1:], "i:p:", ["help", "interface=", "port="])
+except GetoptError:
+    print usage
+    sys.exit(1)
+
+if len(args) != 1:
+    print usage
+    sys.exit(1)
+root = args[0]
+
+for o, a in opts:
+    if o == "--help":
+        print usage
+        sys.exit()
+    if o in ("-i", "--interface"):
+        interface = a
+    if o in ("-p", "--port"):
+        port = int(a)
+
+HTTPServer(interface, port, SamsaraServer(root)).serve_forever()

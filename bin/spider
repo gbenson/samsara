@@ -1,0 +1,52 @@
+#!/usr/bin/env python
+
+### Preamble: allow this program to be run without PYTHON_PATH abuse
+import sys, os
+samsara_dir = os.path.split(os.path.split(os.path.abspath(sys.argv[0]))[0])[0]
+if samsara_dir not in sys.path:
+    sys.path.insert(0, samsara_dir)
+### end of preamble
+
+from getopt import getopt, GetoptError
+from samsara.spider import spider
+from samsara.server import SamsaraServer
+
+exclusions = []
+profiling = 0
+
+usage = """\
+Usage: spider [OPTION] ROOT DEST
+
+  -e, --exclude=PATH    do not spider anything starting with this prefix
+  -p, --profile         run in the Python profiler
+      --help            display this help and exit
+"""
+
+try:
+    opts, args = getopt(sys.argv[1:], "e:p", ["help", "exclude=", "profile"])
+except GetoptError:
+    print usage
+    sys.exit(1)
+
+if len(args) != 2:
+    print usage
+    sys.exit(1)
+root, dest = args
+
+for o, a in opts:
+    if o == "--help":
+        print usage
+        sys.exit()
+    if o in ("-e", "--exclude"):
+        exclusions.append(a)
+    if o in ("-p", "--profile"):
+        profiling = 1
+
+def main():
+    spider(SamsaraServer(root), dest, exclusions)
+
+if profiling:
+    import profile
+    profile.run("main()", "spider.prof")
+else:
+    main()
