@@ -78,7 +78,7 @@ def applyStylesheetPI(doc, params = {}):
 namespace = "http://inauspicious.org/samsara"
 
 for f in filter(lambda i: type(getattr(xpathext, i)) == types.FunctionType,
-                dir(xpathext)):
+                filter(lambda i: i[:2] != "__", dir(xpathext))):
     libxslt.registerExtModuleFunction(f, namespace, getattr(xpathext, f))
 
 # Functions to parse XML using SAX
