@@ -133,6 +133,7 @@ class XPathContext(loader.Loader):
             self.name = name
 
         def __call__(self, *args):
+            # Get the function
             if self.name not in self.xmlctx.names:
                 # Mimic what happens when a real unregistered function
                 # is called (albeit imperfectly)
@@ -142,4 +143,12 @@ class XPathContext(loader.Loader):
                 return None
             module = sys.modules[self.xmlctx.prefix + self.name]
             func = getattr(module, self.name)
-            return apply(func, args)
+
+            # Wrap the arguments where necessary
+            ctx, nodesets = args[0], args[1:]
+            ctx = libxslt.xpathParserContext(_obj=ctx)
+            nodesets = map(lambda s: map(lambda n: libxml2.xmlNode(_obj=n), s),
+                           nodesets)
+            
+            # Go go go
+            return apply(func, [ctx] + nodesets)
