@@ -3,16 +3,23 @@ import time
 import calendar as cal
 import libxml2
 import libxslt
+import string
 from samsara.util import date
 
 # removes leading and trailing space, leading digits, and bracketed stuff
 pl_cleanup_re = re.compile(r"^\s*[\d.]*\s*(.*?)\s*([([{<].*)?\s*$")
+
+# replaces accented ISO-8859-1 characters with their non-accented equivalents
+pl_deaccent_tab = string.maketrans(
+    "ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖØÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöøùúûüýÿ",
+    "AAAAAACEEEEIIIINOOOOOOUUUUYaaaaaaceeeeiiiinoooooouuuuyy")
 
 def permalink(ctx, nodeset):
     """Translate some arbitrary text into something suitable for a fragment
     """
     [node] = nodeset
     text = libxml2.xmlNode(_obj=node).getContent()
+    text = text.decode("UTF-8").encode("ISO-8859-1")
 
     clean = pl_cleanup_re.sub(r"\1", text)
     if clean:
@@ -20,7 +27,7 @@ def permalink(ctx, nodeset):
 
     words = map(lambda w: w.lower(),
                 filter(lambda c: c.isalnum() or c.isspace(),
-                       text).split())
+                       text.translate(pl_deaccent_tab)).split())
     words = [words[0]] + map(lambda w: w.capitalize(), words[1:])
 
     return "".join(words)
