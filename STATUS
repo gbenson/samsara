@@ -5,6 +5,7 @@ Improvements
  - some functions/classes are missing docstrings.
  - make util.loader traverse into modules, reloading modules of
    modules?
+ - make util.intercept not use temporary files
 
 Unit Tests
 ==========
