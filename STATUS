@@ -16,6 +16,7 @@ Unit Tests
   > Link
   > SamsaraServer
  - samsara.spider
+ - samsara.xpathext
 DONE:
  - samsara.handlers.dir
  - samsara.handlers.file
