@@ -1,7 +1,8 @@
 Improvements
 ============
+ - make xml.context cache documents during spidering for speed.
  - try using mmap in the FileHandler for speed
- - move xpathext.__strptime into util.date and replace all time.strptime
+ - move __strptime from the various XPath extensions into util.date.
 
 Unit Tests
 ==========
@@ -17,7 +18,6 @@ Unit Tests
   > Link
   > SamsaraServer
  - samsara.spider
- - samsara.xpathext
 DONE:
  - samsara.handlers.dir
  - samsara.handlers.file
