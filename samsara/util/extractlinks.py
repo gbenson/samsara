@@ -61,11 +61,7 @@ def htmlExtractLinks(html):
                 self.addHref(attrs["href"])
             elif tag == "img":
                 self.addHref(attrs["src"])
-            elif (tag == "link"
-                  and attrs.has_key("rel")
-                  and attrs["rel"] == "stylesheet"
-                  and attrs.has_key("type")
-                  and attrs["type"] == "text/css"):
+            elif tag == "link" and attrs.has_key("href"):
                 self.addHref(attrs["href"])
             elif (tag == "style"
                   and attrs.has_key("type")
