@@ -86,9 +86,13 @@ def permalink(ctx, nodeset):
     [node] = nodeset
     text = libxml2.xmlNode(_obj=node).getContent()
 
+    clean = pl_cleanup_re.sub(r"\1", text)
+    if clean:
+        text = clean.strip()
+
     words = map(lambda w: w.lower(),
                 filter(lambda c: c.isalnum() or c.isspace(),
-                       pl_cleanup_re.sub(r"\1", text)).split())
+                       text).split())
     words = [words[0]] + map(lambda w: w.capitalize(), words[1:])
 
     return "".join(words)
