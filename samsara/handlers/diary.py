@@ -3,7 +3,7 @@ import re
 from samsara import server
 from samsara.util import xml
 
-diary_match_re = re.compile(r"^diary/((\d{4})-(\d{2})/)?$")
+diary_match_re = re.compile(r"^diary/(\d{4})/(\d{2})/(\d{2})/$")
 
 class DiaryHandler(server.HandlerClass):
     """Generate diary pages
@@ -11,9 +11,8 @@ class DiaryHandler(server.HandlerClass):
     def __init__(self, root):
         server.HandlerClass.__init__(self, root)
 
-        self.diary     = os.path.join(self.root, "DB/diary/diary.xml")
-        self.index_xsl = os.path.join(self.root, "DB/diary/index.xsl")
-        self.month_xsl = os.path.join(self.root, "DB/diary/month.xsl")
+        self.diary   = os.path.join(self.root, "DB/diary/diary.xml")
+        self.day_xsl = os.path.join(self.root, "DB/diary/day.xsl")
 
     def handle(self, r):
         m = diary_match_re.search(r.uri)
@@ -21,13 +20,10 @@ class DiaryHandler(server.HandlerClass):
             return
 
         # Work out what to serve
-        year, month = m.group(2), m.group(3)
-        if month:
-            style = self.month_xsl
-            params = {"year": year, "month": month}
-        else:
-            style = self.index_xsl
-            params = {}
+        params = {"year":  m.group(1),
+                  "month": m.group(2),
+                  "day":   m.group(3)}
+        style = self.day_xsl
 
         # Render the page
         db = xml.parseFile(self.diary)

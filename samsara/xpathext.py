@@ -37,6 +37,7 @@ def prettydate(ctx, nodeset):
 
     date = stamp[2]
     day = time.strftime("%A", stamp)
+    mon_yr = time.strftime("%B %Y", stamp)
 
     ten, unit = date/10, date%10
     if ten != 1 and unit>0 and unit<4:
@@ -44,7 +45,7 @@ def prettydate(ctx, nodeset):
     else:
         ordinal = "th"
 
-    return "%s %d%s" % (day, date, ordinal)
+    return "%s %d%s %s" % (day, date, ordinal, mon_yr)
 
 def calendar(ctx, nodeset):
     """Create the body of a Manila-like calendar from a set of diary entries
@@ -74,6 +75,6 @@ def calendar(ctx, nodeset):
             else:
                 cell = row.newChild(None, "td", None)
                 link = cell.newTextChild(None, "a", str(day))
-                link.setProp("href", "#%d" % day)
+                link.setProp("href", "../%02d/" % day)
 
     return ""
