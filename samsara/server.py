@@ -1,3 +1,4 @@
+import sys
 import os
 import urlparse
 import posixpath
@@ -76,8 +77,11 @@ class SamsaraServer(loader.Loader):
 
     def __init__(self, root):
         self.root = os.path.abspath(root)
-
         usercode = os.path.join(root, "Samsara")
+
+        common_dir = os.path.join(usercode, "common")
+        if common_dir not in sys.path:
+            sys.path.insert(0, common_dir)
 
         self.xmlctx = context.XMLContext(os.path.join(usercode, "xpath"))
 

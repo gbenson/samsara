@@ -3,8 +3,6 @@ Improvements
  - make xml.context cache documents during spidering for speed.
  - try using mmap in the FileHandler for speed
  - some functions/classes are missing docstrings.
- - need to formalize some kind of directory for code common to XPath
-   extensions and user handlers.
  - util.date is pretty much inauspicious.org specific and should be
    moved into the above common directory.
  - make util.loader traverse into modules, reloading modules of
