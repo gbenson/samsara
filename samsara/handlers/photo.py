@@ -1,7 +1,6 @@
 import os
 import re
 from samsara import server
-from samsara.xml import context as xmlctx
 
 photo_match_re = re.compile(
     r"^photos/films/((\d{3})/(((\d{2})/)([\w-]+-\5\.(\d)\.jpg)?)?)?$")
@@ -9,8 +8,8 @@ photo_match_re = re.compile(
 class PhotoHandler(server.HandlerClass):
     """Generate indexes of directories in the photos subtree
     """
-    def __init__(self, root):
-        server.HandlerClass.__init__(self, root)
+    def __init__(self, root, xmlctx):
+        server.HandlerClass.__init__(self, root, xmlctx)
 
         self.photodb   = os.path.join(self.root, "DB/photos/photos.xml")
         self.index_xsl = os.path.join(self.root, "DB/photos/index.xsl")
@@ -38,9 +37,9 @@ class PhotoHandler(server.HandlerClass):
             params = {}
 
         # Render the page
-        db = xmlctx.parseFile(self.photodb)
+        db = self.xmlctx.parseFile(self.photodb)
         try:
-            doc = xmlctx.applyStylesheet(db, style, params)
+            doc = self.xmlctx.applyStylesheet(db, style, params)
             doc.setBase(os.path.join(self.root, r.uri, "index.xml"))
 
         finally:

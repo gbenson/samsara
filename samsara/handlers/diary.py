@@ -1,15 +1,14 @@
 import os
 import re
 from samsara import server
-from samsara.xml import context as xmlctx
 
 diary_match_re = re.compile(r"^diary/(\d{4})/(\d{2})/(\d{2})/$")
 
 class DiaryHandler(server.HandlerClass):
     """Generate diary pages
     """
-    def __init__(self, root):
-        server.HandlerClass.__init__(self, root)
+    def __init__(self, root, xmlctx):
+        server.HandlerClass.__init__(self, root, xmlctx)
 
         self.diary   = os.path.join(self.root, "DB/diary/diary.xml")
         self.day_xsl = os.path.join(self.root, "DB/diary/day.xsl")
@@ -26,9 +25,9 @@ class DiaryHandler(server.HandlerClass):
         style = self.day_xsl
 
         # Render the page
-        db = xmlctx.parseFile(self.diary)
+        db = self.xmlctx.parseFile(self.diary)
         try:
-            doc = xmlctx.applyStylesheet(db, style, params)
+            doc = self.xmlctx.applyStylesheet(db, style, params)
             doc.setBase(os.path.join(self.root, r.uri, "index.xml"))
 
         finally:

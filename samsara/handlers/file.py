@@ -1,6 +1,5 @@
 import os
 from samsara import server
-from samsara.xml import context as xmlctx
 from samsara.util import guesstype
 
 class FileHandler(server.HandlerClass):
@@ -18,7 +17,7 @@ class FileHandler(server.HandlerClass):
 
         r.type = guesstype.guessType(path)
         if r.type == "text/xml":
-            r.xml = xmlctx.parseFile(path)
+            r.xml = self.xmlctx.parseFile(path)
         else:
             if r.type == "application/x-sh":
                 r.type = "text/plain"

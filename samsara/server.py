@@ -3,6 +3,7 @@ import glob
 import urlparse
 import posixpath
 from samsara.util import extractlinks
+from samsara.xml import context
 
 class NotFoundError(Exception):
     pass
@@ -12,8 +13,9 @@ class HandlerClass:
     """
     priority = 0
 
-    def __init__(self, root):
+    def __init__(self, root, xmlctx):
         self.root = root
+        self.xmlctx = xmlctx
 
 class Request:
     """Samsara request, the argument to all handler handle methods
@@ -76,7 +78,7 @@ class SamsaraServer:
 
         handlers = map(self.__importHandler, self.__listHandlers())
         handlers.sort(lambda a, b: b.priority - a.priority)
-        self.handlers = map(lambda s: s(self.root), handlers)
+        self.handlers = map(lambda s: s(self.root, context), handlers)
 
     def __listHandlers(self):
         """Return a list of handler modules

@@ -6,6 +6,7 @@ import os
 import re
 import time
 from samsara.util import intercept
+from samsara.xml import context
 
 samsara_dir = os.path.split(os.path.split(os.path.abspath(sys.argv[0]))[0])[0]
 test_dir = os.path.join(samsara_dir, "samsara", "test", "sources")
@@ -20,7 +21,7 @@ class TestCase(unittest.TestCase):
 
     def setUp(self):
         self.dir = os.path.join(test_dir, self.dir)
-        self.handler = self.handler(self.dir)
+        self.handler = self.handler(self.dir, context)
         for file in self.mtimes.keys():
             path = os.path.join(self.dir, file)
             if os.path.exists(path):

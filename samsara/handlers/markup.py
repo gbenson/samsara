@@ -1,5 +1,4 @@
 from samsara import server
-from samsara.xml import context as xmlctx
 
 class MarkupHandler(server.HandlerClass):
     """Mark up XML data
@@ -8,7 +7,7 @@ class MarkupHandler(server.HandlerClass):
 
     def handle(self, r):
         if r.xml is not None:
-            doc = xmlctx.applyStylesheetPI(r.xml)
+            doc = self.xmlctx.applyStylesheetPI(r.xml)
             try:
                 r.data = doc.serialize("ISO-8859-1", 1)
                 r.type = "text/html"
