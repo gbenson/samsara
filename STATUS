@@ -1,6 +1,7 @@
 Improvements
 ============
  - try using mmap in the FileHandler for speed
+ - move xpathext.__strptime into util.date and replace all time.strptime
 
 Unit Tests
 ==========
@@ -10,6 +11,7 @@ Unit Tests
  - samsara.util.intercept
  - samsara.util.extractlinks
  - samsara.util.system
+ - samsara.util.date
  - samsara.server
   > Request [DONE]
   > Link

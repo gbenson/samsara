@@ -3,6 +3,7 @@ import time
 import calendar as cal
 import libxml2
 import libxslt
+from samsara.util import date
 
 # removes leading and trailing space, leading digits, and bracketed stuff
 pl_cleanup_re = re.compile(r"^\s*[\d.]*\s*(.*?)\s*([([{<].*)?\s*$")
@@ -38,15 +39,7 @@ def __format_date(ctx, nodeset, format):
     """
     [node] = nodeset
     stamp = __strptime(libxml2.xmlNode(_obj=node).getContent())
-
-    date = stamp[2]
-    ten, unit = date/10, date%10
-    if ten != 1 and unit>0 and unit<4:
-        ordinal = ["st", "nd", "rd"][unit - 1]
-    else:
-        ordinal = "th"
-
-    return time.strftime(format, stamp).replace("%o", "%d%s" % (date, ordinal))
+    return date.strftime(format, stamp)
 
 def prettydate(ctx, nodeset, frumpy=0):
     """Prettify the timestamp on a diary entry

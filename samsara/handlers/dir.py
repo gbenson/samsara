@@ -4,6 +4,7 @@ import libxml2
 from samsara import server
 from samsara.util import xml
 from samsara.util import guesstype
+from samsara.util import date
 
 
 # Modified versions of directory listing functions
@@ -73,16 +74,7 @@ def prettifyDirent(entry):
     """
     entry = entry.copy()
 
-    date = time.localtime(entry["date"])
-    day = date[2]
-    suffix = "th"
-    if day/10 != 1:
-        try:
-            suffix = ["th", "st", "nd", "rd"][day%10]
-        except:
-            pass
-    format = str(day) + suffix + " %B %Y"
-    entry["date"] = time.strftime(format, date)
+    entry["date"] = date.strftime("%o %B %Y", time.localtime(entry["date"]))
 
     if entry.has_key("size"):
         size = entry["size"]
