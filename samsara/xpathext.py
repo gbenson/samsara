@@ -127,3 +127,41 @@ def calendar(ctx, today, next, prev, stamps):
         cell.addContent(monthnames[month % 12])
 
     return ""
+
+class EncodeError(Exception):
+    """There is an error in the supplied XML
+    """
+    pass
+
+def entityencode(ctx, nodeset):
+    """Return an entity-encoded string suitable for an RSS feed
+    """
+    def encodeText(txt):
+        return txt.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+        
+    def encodeNodeset(node):
+        output = ""
+        while node:
+            if node.type == "element":
+                output += "<%s" % node.name
+                attr = node.properties
+                while attr:
+                    output += ' %s="%s"' % (attr.name,
+                                            encodeText(node.prop(attr.name)))
+                    attr = attr.next
+                if node.children:
+                    output += ">"
+                    output += encodeNodeset(node.children)
+                    output += "</%s>" % node.name
+                else:
+                    output += "/>"
+            elif node.type == "text":
+                output += encodeText(node.getContent())
+            else:
+                raise EncodeError, "unexpected '%s' node" % node.type
+            node = node.next
+        return output
+
+    return reduce(lambda x, y: x + y,
+                  map(lambda n: encodeNodeset(libxml2.xmlNode(_obj=n)),
+                      nodeset))
