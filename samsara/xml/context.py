@@ -1,11 +1,9 @@
 import sys
-import os
-import glob
-import imp
 import types
 import libxml2
 import libxslt
 from samsara.util import intercept
+from samsara.util import loader
 
 # libxml2 and libxslt print loads of crap to stdout and stderr when
 # things go wrong.  We intecept this and turn it into exceptions.
@@ -83,16 +81,7 @@ class XMLContext:
         finally:
             style.freeStylesheet()
 
-def module_mtime(module):
-    """Work out the mtime of a loaded module
-    """
-    file = module.__file__
-    # Make sure we are looking at the .py file
-    if os.path.exists(file[:-1]):
-        file = file[:-1]
-    return os.path.getmtime(file)
-
-class XPathContext:
+class XPathContext(loader.Loader):
     """Handle XPath extension functions
 
     This directly affects sys.modules and cannot be recoded so it does
@@ -111,59 +100,30 @@ class XPathContext:
     """
 
     namespace = "http://inauspicious.org/samsara"
-    prefix = "samsara.xml.xpath."
 
     def __init__(self, dir):
-        self.dir = dir
-        self.names = []
+        self.disabled = not dir
+        if self.disabled:
+            return
+
+        loader.Loader.__init__(self, [dir], "samsara.xml.xpath")
         self.registered = []
 
     def install(self):
-        if not self.dir:
+        if self.disabled:
             return
-
-        modules = map(lambda p: os.path.split(p)[1][:-3],
-                      glob.glob(os.path.join(self.dir, "*.py")))
-
-        # Unload modules whose files have been deleted
-        for name in self.names:
-            if name not in modules:
-                del sys.modules[self.prefix + name]
-        self.names = modules
-
-        # Load new modules and reload changed ones as necessary
-        for name in modules:
-            fullname = self.prefix + name
-
-            if sys.modules.has_key(fullname):
-                # Already loaded, reload if necessary
-                old_mtime = sys.modules[fullname].__mtime__
-                mtime = module_mtime(sys.modules[fullname])
-            else:
-                # Not yet loaded
-                mtime, old_mtime = 0, -1
-
-            if mtime > old_mtime:
-                f, p, d = imp.find_module(name, [self.dir])
-                try:
-                    module = imp.load_module(fullname, f, p, d)
-
-                    if mtime == 0:
-                        mtime = module_mtime(module)
-                    module.__mtime__ = mtime
-
-                    # Register the function
-                    if name not in self.registered:
-                        libxslt.registerExtModuleFunction(
-                            name, self.namespace, self.Function(self, name))
-                        self.registered.append(name)
-
-                finally:
-                    if f:
-                        f.close()
+        self.updateCache()
 
     def remove(self):
         pass
+
+    def moduleLoaded(self, name, module):
+        """Callback called when a module is (re)loaded
+        """
+        if name not in self.registered:
+            libxslt.registerExtModuleFunction(
+                name, self.namespace, self.Function(self, name))
+            self.registered.append(name)
 
     class Function:
         """Object used to hack around the aforementioned libxslt breakage

@@ -1,7 +1,5 @@
 Improvements
 ============
- - refactor the two bits that hold a cache of modules (server and
-   xml.context) into a new module, util.modulecache or something.
  - parts of handlers.dir are fairly inauspicious.org specific; sort
    something out about it.
  - make xml.context cache documents during spidering for speed.
@@ -9,6 +7,7 @@ Improvements
  - move __strptime from the various XPath extensions into util.date.
  - actually, util.date is pretty much inauspicious.org specific and can
    be nobbled when the handlers are moved away.
+ - some functions/classes are missing docstrings.
 
 Unit Tests
 ==========
@@ -16,6 +15,9 @@ Unit Tests
  - samsara.util.intercept
  - samsara.util.extractlinks
  - samsara.util.date
+ - samsara.xml.context
+  > XMLContext [DONE]
+  > XPathContext
  - samsara.server
   > Request [DONE]
   > Link
@@ -25,6 +27,6 @@ DONE:
  - samsara.handlers.dir
  - samsara.handlers.file
  - samsara.util.guesstype
- - samsara.xml.context
+ - samsara.util.loader
  - samsara.xml.sax
  - samsara.httpserver
