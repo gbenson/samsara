@@ -38,7 +38,8 @@ def sitecopy(database, root, site, partial = 0, auto = 0, restrict = None):
         status = {"added": [], "changed": [], "deleted": [], "moved": []}
         
         in_sect = None
-        for tag, item in map(lambda s: s.split("|"), output[:-1].split("\n")):
+        for tag, item in map(lambda s: s.split("|", 1),
+                             output[:-1].split("\n")):
             if tag == "sitestart":
                 if site != item:
                     raise ValueError, "site mismatch"
