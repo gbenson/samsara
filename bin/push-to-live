@@ -52,13 +52,13 @@ for o, a in opts:
     if o in ("-a", "--auto"):
         auto = 1
     if o in ("-A", "--allow-adds"):
-        restrict["added"] = a
+        restrict["added"] = int(a)
     if o in ("-D", "--allow-deletes"):
-        restrict["deleted"] = a
+        restrict["deleted"] = int(a)
     if o in ("-M", "--allow-moves"):
-        restrict["moved"] = a
+        restrict["moved"] = int(a)
     if o in ("-C", "--allow-changes"):
-        restrict["changed"] = a
+        restrict["changed"] = int(a)
 
 try:
     sitecopy.sitecopy(database, root, site, partial, auto, restrict)
