@@ -76,7 +76,7 @@ class SamsaraServer:
     def __init__(self, root):
         self.root = os.path.abspath(root)
 
-        xmlctx = context.XMLContext()
+        xmlctx = context.XMLContext(os.path.join(root, "XPath"))
 
         handlers = map(self.__importHandler, self.__listHandlers())
         handlers.sort(lambda a, b: b.priority - a.priority)
