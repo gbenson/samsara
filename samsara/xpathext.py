@@ -68,16 +68,17 @@ monthnames = ("January", "February", "March", "April", "May", "June",
 # ALSO HACK: a number of things in here are to replicate _exactly_ the
 # outptu of the old XSLT-based calendar and should be removed the next
 # time everything gets pushed
-def calendar(ctx, next, prev, stamps):
+def calendar(ctx, today, next, prev, stamps):
     """Create the body of a Manila-like calendar from a set of diary entries
     """
-    stamps, prev, next = map(lambda l: map(
+    stamps, prev, next, today = map(lambda l: map(
         lambda n: __strptime(libxml2.xmlNode(_obj=n).getContent()), l),
-        (stamps, prev, next))
+        (stamps, prev, next, today))
 
     # Extract the dates from the supplied nodeset
     year, month = stamps[0][:2]
     days = map(lambda s: s[2], stamps)
+    today = today[0][2]
 
     # Find the insertion node of the output document
     tctxt = libxslt.xpathParserContext(_obj=ctx).context().transformContext()
@@ -101,6 +102,9 @@ def calendar(ctx, next, prev, stamps):
         for day in week:
             if not day:
                 row.newChild(None, "td", None)
+            elif day == today:
+                cell = row.newTextChild(None, "td", str(day))
+                cell.setProp("class", "today")
             elif day not in days:
                 row.newTextChild(None, "td", str(day))
             else:
