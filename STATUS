@@ -15,6 +15,7 @@ Unit Tests
  - samsara.xml.context
   > XMLContext [DONE]
   > XPathContext
+ - samsara.xml.xpath
  - samsara.server
   > Request [DONE]
   > Link
