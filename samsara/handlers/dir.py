@@ -96,19 +96,16 @@ def prettifyDirent(entry):
     if not entry["type"]:
         entry["type"] = "text/plain"
 
-    try:
-        entry["icon"] = {"directory":              "folder",
-                         "application/postscript": "ps",
-                         "application/pdf":        "pdf",
-                         "application/x-sh":       "script",
-                         "application/x-tar":      "compressed",
-                         "application/zip":        "compressed",
-                         "image/jpeg":             "image2",
-                         "image/png":              "image2",
-                         "text/plain":             "text"   }[entry["type"]]
-    except:
-        entry["icon"] = "generic";
-
+    entry["icon"] = {"directory":              "folder",
+                     "application/postscript": "ps",
+                     "application/pdf":        "pdf",
+                     "application/x-sh":       "script",
+                     "application/x-tar":      "compressed",
+                     "application/zip":        "compressed",
+                     "image/jpeg":             "image2",
+                     "image/png":              "image2",
+                     "text/plain":             "text"
+                     }.get(entry["type"], "generic")
     return entry
 
 
