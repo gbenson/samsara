@@ -3,6 +3,8 @@ Improvements
  - make xml.context cache documents during spidering for speed.
  - try using mmap in the FileHandler for speed
  - move __strptime from the various XPath extensions into util.date.
+ - actually, util.date is pretty much inauspicious.org specific and can
+   be nobbled when the handlers are moved away.
 
 Unit Tests
 ==========
