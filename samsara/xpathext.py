@@ -32,6 +32,21 @@ def permalink(ctx, nodeset):
 
     return "".join(words)
 
+def photoname(ctx, nodeset):
+    """Translate some arbitrary text into something suitable for a photo name
+    """
+    [node] = nodeset
+    text = libxml2.xmlNode(_obj=node).getContent()
+    text = text.decode("UTF-8").encode("ISO-8859-1")
+
+    text = text.split(",", 1)[0].strip()
+
+    words = map(lambda w: w.lower(),
+                filter(lambda c: c.isalnum() or c.isspace() or c == "-",
+                       text.translate(pl_deaccent_tab)).split())
+
+    return "-".join(words)
+
 def __strptime(stamp):
     """Make a 9-tuple from the timestamp on a diary entry
     """
