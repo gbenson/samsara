@@ -100,6 +100,7 @@ def prettifyDirent(entry):
         entry["icon"] = {"directory":              "folder",
                          "application/postscript": "ps",
                          "application/pdf":        "pdf",
+                         "application/x-sh":       "script",
                          "application/x-tar":      "compressed",
                          "application/zip":        "compressed",
                          "image/jpeg":             "image2",

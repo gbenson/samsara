@@ -20,4 +20,6 @@ class FileHandler(server.HandlerClass):
         if r.type == "text/xml":
             r.xml = xml.parseFile(path)
         else:
+            if r.type == "application/x-sh":
+                r.type = "text/plain"
             r.data = open(path, "r").read()
