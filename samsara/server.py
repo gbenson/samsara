@@ -64,7 +64,6 @@ class Link:
         or a query string. The fragment, if any, is removed.
         """
         assert self.isLocal()
-        assert (self.params, self.query) == ("", "")
 
         path = posixpath.join(posixpath.split(base)[0], self.path)
         slash = ["", "/"][path != "/" and path[-1] == "/"]
