@@ -77,11 +77,13 @@ class SamsaraServer(loader.Loader):
     def __init__(self, root):
         self.root = os.path.abspath(root)
 
-        self.xmlctx = context.XMLContext(os.path.join(root, "XPath"))
+        usercode = os.path.join(root, "Samsara")
+
+        self.xmlctx = context.XMLContext(os.path.join(usercode, "xpath"))
 
         samsara_dir = os.path.split(os.path.abspath(__file__))[0]
         sams_handlers = os.path.join(samsara_dir, "handlers")
-        user_handlers = os.path.join(self.root, "Handlers")
+        user_handlers = os.path.join(usercode, "handlers")
         loader.Loader.__init__(
             self, [user_handlers, sams_handlers], "samsara.handlers")
         self.handlers = {}
