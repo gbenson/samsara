@@ -1,3 +1,9 @@
+2003-02-23 17:20  gary
+
+	* samsara/: spider.py (1.2), handlers/markup.py (1.4):
+	
+	Hack in the ability to specify the output filename when spidering
+
 2002-12-21 14:09  gary
 
 	* STATUS (1.18), samsara/xml/xpath.py (1.1):
