@@ -78,7 +78,7 @@ def sitecopy(database, root, site, partial = 0, auto = 0, restrict = None):
 
         # All's clear, so push the files
         if auto:
-            opts.append("--quiet")
+            opts += ("--quiet",)
 
         status = apply(system.system, (cmd,) + opts + ("--update", site))
         if status != 0:
