@@ -8,16 +8,16 @@ def cssExtractLinks(css):
 
     Currently very very simplistic: it makes no attempt to properly
     parse the CSS, knows nothing of comments, and only recognises
-    '@import' lines.
+    '@import' and 'url()' lines.
 
     The URLs are not guaranteed to be unique.
     """
     hrefs = []
-    import_re = re.compile(r'@import\s+"([^"]*)";')
+    href_re = re.compile(r'@import\s+"([^"]*)";|url\(([^)]*)\)')
     for line in css.split("\n"):
-        m = import_re.search(line)
+        m = href_re.search(line)
         if m:
-            hrefs.append(m.group(1))
+            hrefs.append(m.group(1) or m.group(2))
     return hrefs
 
 class HTMLError(Exception):
