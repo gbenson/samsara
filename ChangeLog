@@ -1,3 +1,10 @@
+2002-12-19 23:42  gary
+
+	* samsara/server.py (1.9):
+	
+	Move the XPath and Handlers directories in preparation for a common
+	code directory.
+
 2002-12-18 20:38  gary
 
 	* STATUS (1.14):
