@@ -1,3 +1,15 @@
+2003-05-03 16:45  gary
+
+	* samsara/util/extractlinks.py (1.6):
+	
+	Also recognise url() links in CSS
+
+2003-05-03 16:15  gary
+
+	* samsara/util/extractlinks.py (1.5):
+	
+	Bugfix
+
 2003-02-23 17:20  gary
 
 	* samsara/: spider.py (1.2), handlers/markup.py (1.4):
