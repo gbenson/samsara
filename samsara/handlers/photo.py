@@ -3,7 +3,8 @@ import re
 from samsara import server
 from samsara.util import xml
 
-photo_match_re = re.compile(r"^photos/films/((\d{3})/((\d{2})/)?)?$")
+photo_match_re = re.compile(
+    r"^photos/films/((\d{3})/(((\d{2})/)([\w-]+-\5\.(\d)\.jpg)?)?)?$")
 
 class PhotoHandler(server.HandlerClass):
     """Generate indexes of directories in the photos subtree
@@ -21,8 +22,12 @@ class PhotoHandler(server.HandlerClass):
             return
 
         # Work out what to serve
-        film, photo = m.group(2), m.group(4)
-        if photo:
+        film, photo, image = m.group(2), m.group(5), m.group(7)
+        if image:
+            r.uri = "photos/films/%(f)s/%(p)s/%(f)s-%(p)s.%(i)s.jpg" % {
+                "f": film, "p": photo, "i": image}
+            return
+        elif photo:
             style = self.photo_xsl
             params = {"film":  film, "photo": photo}
         elif film:
