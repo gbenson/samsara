@@ -15,7 +15,7 @@ def cssExtractLinks(css):
     hrefs = []
     import_re = re.compile(r'@import\s+"([^"]*)";')
     for line in css.split("\n"):
-        m = import_re.search(css)
+        m = import_re.search(line)
         if m:
             hrefs.append(m.group(1))
     return hrefs
