@@ -3,19 +3,14 @@ Improvements
  - make xml.context cache documents during spidering for speed.
  - try using mmap in the FileHandler for speed
  - some functions/classes are missing docstrings.
- - util.date is pretty much inauspicious.org specific and should be
-   moved into the above common directory.
  - make util.loader traverse into modules, reloading modules of
    modules?
- - move __strptime from the various XPath extensions into wherever
-   util.date ends up.
 
 Unit Tests
 ==========
  - samsara.handlers.markup
  - samsara.util.intercept
  - samsara.util.extractlinks
- - samsara.util.date
  - samsara.xml.context
   > XMLContext [DONE]
   > XPathContext
