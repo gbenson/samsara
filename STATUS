@@ -1,6 +1,9 @@
 Improvements
 ============
  - try using mmap in the FileHandler for speed
+ - write the diary generator (duh!)
+ - hack it about such that the diary generator can be run
+   independantly (on a different machine probably).
 
 Unit Tests
 ==========
