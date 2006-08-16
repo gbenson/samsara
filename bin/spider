@@ -11,19 +11,22 @@ from getopt import getopt, GetoptError
 from samsara.spider import spider
 from samsara.server import SamsaraServer
 
+startpoints = []
 exclusions = []
 profiling = 0
 
 usage = """\
 Usage: spider [OPTION] ROOT DEST
 
+  -s, --startat=PATH    start spidering at this prefix
   -e, --exclude=PATH    do not spider anything starting with this prefix
   -p, --profile         run in the Python profiler
       --help            display this help and exit
 """
 
 try:
-    opts, args = getopt(sys.argv[1:], "e:p", ["help", "exclude=", "profile"])
+    opts, args = getopt(
+        sys.argv[1:], "s:e:p", ["help", "startat=", "exclude=", "profile"])
 except GetoptError:
     print usage
     sys.exit(1)
@@ -37,13 +40,18 @@ for o, a in opts:
     if o == "--help":
         print usage
         sys.exit()
+    if o in ("-s", "--startat"):
+        startpoints.append(a)
     if o in ("-e", "--exclude"):
         exclusions.append(a)
     if o in ("-p", "--profile"):
         profiling = 1
 
+if not startpoints:
+    startpoints.append("/")
+
 def main():
-    spider(SamsaraServer(root), dest, exclusions)
+    spider(SamsaraServer(root), dest, startpoints, exclusions)
 
 if profiling:
     import profile

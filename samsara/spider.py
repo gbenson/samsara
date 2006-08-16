@@ -1,7 +1,9 @@
 import os
 
-def spider(server, dest, exclusions = ()):
-    items = {"/": 0}
+def spider(server, dest, startpoints, exclusions = ()):
+    items = {}
+    for path in startpoints:
+        items[path] = 0
 
     while 1:
         todo = filter(lambda i: not items[i], items.keys())
