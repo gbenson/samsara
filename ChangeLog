@@ -1,3 +1,9 @@
+2006-08-16 13:19  gary
+
+	* bin/spider (1.2), samsara/spider.py (1.3):
+	
+	Allow the start point of the spidering to be specified
+
 2004-01-20 14:45  gary
 
 	* samsara/xml/context.py (1.6):
