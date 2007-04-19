@@ -1,3 +1,9 @@
+2007-04-19 09:30  gary
+
+	* samsara/: util/loader.py (1.2), xml/context.py (1.7):
+	
+	Work with Python 2.4
+
 2006-08-16 13:19  gary
 
 	* bin/spider (1.2), samsara/spider.py (1.3):
