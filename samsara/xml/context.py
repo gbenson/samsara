@@ -122,7 +122,7 @@ class XPathContext(loader.Loader):
         if self.disabled:
             return
 
-        loader.Loader.__init__(self, [dir], "samsara.xml.xpath")
+        loader.Loader.__init__(self, [dir], "samsara.xpath")
         self.registered = []
 
     def install(self):

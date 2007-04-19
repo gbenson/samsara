@@ -48,6 +48,15 @@ class Loader:
                 mtime, old_mtime = 0, -1
 
             if mtime > old_mtime:
+                # Create dummy modules for parents as necessary
+                items = fullname.split(".")
+                for i in xrange(1, len(items)):
+                    parent = ".".join(items[:i])
+                    if sys.modules.has_key(parent):
+                        continue
+                    sys.modules[parent] = imp.new_module(parent)
+
+                # Now (re)load the module
                 f, p, d = imp.find_module(name, self.paths)
                 try:
                     module = imp.load_module(fullname, f, p, d)
