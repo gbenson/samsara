@@ -8,7 +8,7 @@ class FileHandler(server.HandlerClass):
     priority = -10
 
     def handle(self, r):
-        if r.data or r.xml:
+        if r.payload is not None:
             return
         
         path = apply(os.path.join, [self.root] + r.uri.split("/"))
@@ -17,8 +17,8 @@ class FileHandler(server.HandlerClass):
 
         r.type = guesstype.guessType(path)
         if r.type == "text/xml":
-            r.xml = self.xmlctx.parseFile(path)
+            r.payload = self.xmlctx.parseFile(path)
         else:
             if r.type == "application/x-sh":
                 r.type = "text/plain"
-            r.data = open(path, "r").read()
+            r.payload = path

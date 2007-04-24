@@ -6,8 +6,8 @@ class MarkupHandler(server.HandlerClass):
     priority = -50
 
     def handle(self, r):
-        if r.xml is not None:
-            node = r.xml.children
+        if r.type == "text/xml":
+            node = r.payload.children
             while node:
                 if (node.type, node.name) == ("pi", "samsara"):
                     # XXX should parse this properly
@@ -15,9 +15,10 @@ class MarkupHandler(server.HandlerClass):
                         raise ValueError, "unhandled directive"
                     r.filename = "index.shtml"
                 node = node.next
-            doc = self.xmlctx.applyStylesheetPI(r.xml)
+            doc = self.xmlctx.applyStylesheetPI(r.payload)
             try:
-                r.data = doc.serialize("ISO-8859-1", 1)
+                r.payload.freeDoc()
+                r.payload = doc.serialize("ISO-8859-1", 1)
                 r.type = "text/html"
 
             finally:

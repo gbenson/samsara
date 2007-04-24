@@ -21,6 +21,9 @@ class TestResponse:
         self.type = type
         self.data = data
 
+    def getPayload(self):
+        return self.data
+
 class TestSamsaraServer:
     def get(self, uri):
         if uri == "/200":

@@ -35,4 +35,4 @@ for o, a in opts:
         print usage
         sys.exit()
 
-sys.stdout.write(SamsaraServer(root).get(item).data)
+sys.stdout.write(SamsaraServer(root).get(item).getPayload())

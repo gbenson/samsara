@@ -33,4 +33,7 @@ def spider(server, dest, startpoints, exclusions = ()):
             dir = os.path.split(path)[0]
             if not os.path.isdir(dir):
                 os.makedirs(dir)
-            open(path, "w").write(response.data)
+            if os.path.exists(response.payload):
+                os.link(response.payload, path)
+            else:
+                open(path, "w").write(response.payload)

@@ -38,7 +38,7 @@ class HTTPServer(SocketServer.TCPServer):
             """
             try:
                 r = self.server.samsara.get(urllib.unquote(self.path))
-                self.sendResponse(200, r.type, r.data)
+                self.sendResponse(200, r.type, r.getPayload())
 
             except:
                 type, value, tb = sys.exc_info()

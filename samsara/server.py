@@ -27,20 +27,24 @@ class Request:
         self.uri = uri[1:]
 
         self.type = None
-        self.data = None
-        self.xml  = None
+        self.payload = None
 
     def __del__(self):
-        if hasattr(self, "xml") and self.xml:
-            self.xml.freeDoc()
+        if hasattr(self, "type") and self.type == "text/xml":
+            self.payload.freeDoc()
+
+    def getPayload(self):
+        if os.path.exists(self.payload):
+            self.payload = open(self.payload, "r").read()
+        return self.payload
 
     def links(self):
         """Extract all URLs from the response's body
         """
         if self.type == "text/css":
-            links = extractlinks.cssExtractLinks(self.data)
+            links = extractlinks.cssExtractLinks(self.getPayload())
         elif self.type == "text/html":
-            links = extractlinks.htmlExtractLinks(self.data)
+            links = extractlinks.htmlExtractLinks(self.getPayload())
         else:
             links = []
         return map(Link, links)
@@ -114,7 +118,7 @@ class SamsaraServer(loader.Loader):
         for h in handlers:
             h.handle(r)
 
-        if r.data is None:
+        if r.payload is None:
             raise NotFoundError, "%s not found" % uri
 
         return r

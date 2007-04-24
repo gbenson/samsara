@@ -17,7 +17,7 @@ class DirHandler(server.HandlerClass):
     priority = -5
 
     def handle(self, r):
-        if r.data or r.xml:
+        if r.payload is not None:
             return
         
         path = apply(os.path.join, [self.root] + r.uri.split("/"))
@@ -38,17 +38,17 @@ class DirHandler(server.HandlerClass):
         # Render the page
         title = "Index of /" + path[len(self.root)+1:]
         r.type = "text/html"
-        r.data = "<html><head><title>%s</title>" % title + \
-                 "<body><h1>%s</h1><ul>\n" % title
+        r.payload = "<html><head><title>%s</title>" % title + \
+                    "<body><h1>%s</h1><ul>\n" % title
 
         if path != self.root:
-            r.data += '<li><a href="../">Parent Directory</a></li>\n'
+            r.payload += '<li><a href="../">Parent Directory</a></li>\n'
 
         items = listdir(path)
         items.sort()
         for item in items:
             if os.path.isdir(os.path.join(path, item)):
                 item += "/"
-            r.data += '<li><a href="%s">%s</a></li>\n' % (item, item)
+            r.payload += '<li><a href="%s">%s</a></li>\n' % (item, item)
 
-        r.data += "</ul></body></html>\n"
+        r.payload += "</ul></body></html>\n"

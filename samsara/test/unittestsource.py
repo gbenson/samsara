@@ -36,11 +36,12 @@ class TestCase(unittest.TestCase):
             # stuff to print it out.  Oh, and I have no idea what the
             # parameter to debugDumpDocument is. It's a FILE * in the
             # C one, but here?
-            r.data = intercept.intercept(intercept.STDOUT,
-                                         r.xml.debugDumpDocument, None)[1]
+            r.payload = intercept.intercept(
+                intercept.STDOUT, r.payload.debugDumpDocument, None)[1]
+            r.type = "text/plain"
             expected = debug_trim_re.sub(r"\1...", expected)
 
-        self.assertEqual(r.data, expected)
+        self.assertEqual(r.getPayload(), expected)
 
     def checkDeclined(self, uri):
         """Apply a series of tests to what should be a failed request
