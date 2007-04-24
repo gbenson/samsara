@@ -1,3 +1,13 @@
+2007-04-24 12:50  gary
+
+	* bin/get (1.2), samsara/httpserver.py (1.2), samsara/server.py
+	(1.11), samsara/spider.py (1.4), samsara/handlers/dir.py (1.9),
+	samsara/handlers/file.py (1.5), samsara/handlers/markup.py (1.5),
+	samsara/test/test_httpserver.py (1.2),
+	samsara/test/unittestsource.py (1.5):
+	
+	Link static files rather than reading then writing them
+
 2007-04-19 09:30  gary
 
 	* samsara/: util/loader.py (1.2), xml/context.py (1.7):
