@@ -23,3 +23,5 @@ class MarkupHandler(server.HandlerClass):
 
             finally:
                 doc.freeDoc()
+
+            assert r.payload.find('xmlns=""') == -1
