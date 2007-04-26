@@ -38,7 +38,10 @@ def __parseFileObject(file, handler, path, what):
             elif what == "HTML":
                 ctxt = libxml2.htmlCreatePushParser(handler, chunk,
                                                     len(chunk), path)
-                parseChunk = libxml2.htmlParseChunk
+                if hasattr(libxml2.parserCtxt, "htmlParseChunk"):
+                    parseChunk = libxml2.parserCtxt.htmlParseChunk
+                else:
+                    parseChunk = libxml2.htmlParseChunk
             else:
                 raise RuntimeError, "unknown document type '%s'" % what
             
