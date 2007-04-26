@@ -1,3 +1,15 @@
+2007-04-26 12:41  gary
+
+	* samsara/handlers/markup.py (1.6):
+	
+	Watch for xmlns="" trash sneaking in
+
+2007-04-26 09:55  gary
+
+	* samsara/xml/sax.py (1.2):
+	
+	Work with newer libxml2
+
 2007-04-24 12:50  gary
 
 	* bin/get (1.2), samsara/httpserver.py (1.2), samsara/server.py
