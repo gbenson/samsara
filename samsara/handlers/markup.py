@@ -18,7 +18,7 @@ class MarkupHandler(server.HandlerClass):
             doc = self.xmlctx.applyStylesheetPI(r.payload)
             try:
                 r.payload.freeDoc()
-                r.payload = doc.serialize("ISO-8859-1", 1)
+                r.payload = doc.serialize("utf-8", 1)
                 r.type = "text/html"
 
             finally:
