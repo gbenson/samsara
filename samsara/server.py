@@ -17,6 +17,31 @@ class HandlerClass:
     def __init__(self, root, xmlctx):
         self.root = root
         self.xmlctx = xmlctx
+        self.docs = []
+
+    def __del__(self):
+        for path, name, stamp in self.docs:
+            if hasattr(self, name):
+                getattr(self, name).freeDoc()
+
+    def registerDocument(self, path, name):
+        """Register an XML document to maintain a cached copy of.
+        """
+        self.docs.append([path, name, 0])
+
+    def updateDocuments(self):
+        """Ensure all registered documents are up to date.
+        """
+        for i in xrange(len(self.docs)):
+            path, name, old_mtime = self.docs[i]
+            mtime = os.path.getmtime(path)
+            if mtime <= old_mtime:
+                continue
+            if hasattr(self, name):
+                getattr(self, name).freeDoc()
+            doc = self.xmlctx.parseFile(path)
+            setattr(self, name, doc)
+            self.docs[i][2] = mtime
 
 class Request:
     """Samsara request, the argument to all handler handle methods
@@ -116,6 +141,7 @@ class SamsaraServer(loader.Loader):
         handlers = map(lambda k: self.handlers[k], self.handlers.keys())
         handlers.sort(lambda a, b: b.priority - a.priority)
         for h in handlers:
+            h.updateDocuments()
             h.handle(r)
 
         if r.payload is None:
