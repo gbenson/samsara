@@ -19,12 +19,18 @@ class XMLContext:
     """
     def __init__(self, xpathdir = None):
         self.xpathctx = XPathContext(xpathdir)
+        self.validctx = libxml2.newValidCtxt()
 
     def parseFile(self, path):
         """Parse an XML file and build a tree
         """
         doc, errors = intercept.intercept(STREAMS, libxml2.parseFile, path)
         if doc is None or errors:
+            raise XMLError, errors + "error: can't load %s" % path
+        junk, errors = intercept.intercept(STREAMS,
+                                           doc.validateDocument, self.validctx)
+        if errors and errors != "no DTD found!\n":
+            doc.freeDoc()
             raise XMLError, errors + "error: can't load %s" % path
         return doc
 
