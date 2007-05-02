@@ -1,3 +1,21 @@
+2007-05-02 15:32  gary
+
+	* samsara/xml/context.py (1.9):
+	
+	Validate generated XML too
+
+2007-05-02 12:00  gary
+
+	* samsara/xml/context.py (1.8):
+	
+	Validate XML files when possible
+
+2007-05-02 10:46  gary
+
+	* samsara/server.py (1.12):
+	
+	Add logic to maintain cached copies of XML documents
+
 2007-05-01 13:51  gary
 
 	* samsara/handlers/markup.py (1.8):
