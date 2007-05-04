@@ -1,3 +1,15 @@
+2007-05-04 17:16  gary
+
+	* COPYING (1.1.2.1):
+	
+	Prepare for release
+
+2007-05-04 17:16  gary
+
+	* COPYING (1.1):
+	
+	file COPYING was initially added on branch samsara-0_1-branch.
+
 2007-05-02 15:32  gary
 
 	* samsara/xml/context.py (1.9):
