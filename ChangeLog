@@ -1,3 +1,9 @@
+2007-05-05 12:25  gary
+
+	* samsara/server.py (1.13):
+	
+	Allow user code directory to have lowecase name
+
 2007-05-04 17:16  gary
 
 	* COPYING (1.1.2.1):
