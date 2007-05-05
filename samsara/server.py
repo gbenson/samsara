@@ -106,7 +106,13 @@ class SamsaraServer(loader.Loader):
 
     def __init__(self, root):
         self.root = os.path.abspath(root)
-        usercode = os.path.join(root, "Samsara")
+        for caps in (True, False):
+            usercode = "samsara"
+            if caps:
+                usercode = usercode.title()
+            usercode = os.path.join(root, usercode)
+            if os.path.isdir(usercode):
+                break
 
         common_dir = os.path.join(usercode, "common")
         if common_dir not in sys.path:
