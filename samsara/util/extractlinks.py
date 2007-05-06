@@ -25,6 +25,8 @@ class HTMLError(Exception):
     """
     pass
 
+xml_re = re.compile("^(<\?xml|<!DOCTYPE\s[^>]*XHTML)")
+
 def htmlExtractLinks(html):
     """Extract URLs from some HTML (or XHTML)
 
@@ -87,7 +89,7 @@ def htmlExtractLinks(html):
             if self.type != "HTML":
                 sax.SAXCallback.error(self, msg)
 
-    if html[:5] == "<?xml":
+    if xml_re.match(html):
         return sax.parseXML(html, Parser("XML")).hrefs
     else:
         return sax.parseHTML(html, Parser("HTML")).hrefs
