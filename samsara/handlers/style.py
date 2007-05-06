@@ -6,7 +6,8 @@ class StyleHandler(server.HandlerClass):
     priority = -50
 
     def handle(self, r):
-        if r.type == "text/xml":
-            doc = r.payload
-            r.payload = self.xmlctx.applyStylesheetPI(doc)
-            doc.freeDoc()
+        if r.type != "text/xml":
+            return
+        doc = r.payload
+        r.payload = self.xmlctx.applyStylesheetPI(doc)
+        doc.freeDoc()
