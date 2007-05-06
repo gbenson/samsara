@@ -1,3 +1,35 @@
+2007-05-06 22:10  gary
+
+	* samsara/handlers/: serialize.py (1.2), style.py (1.2):
+	
+	Make all handlers return the instant they figure they're not doing
+	anything
+
+2007-05-06 17:54  gary
+
+	* samsara/util/extractlinks.py (1.7):
+	
+	Recognise that XHTML without an XML declaration is still XML
+
+2007-05-06 17:46  gary
+
+	* samsara/xml/sax.py (1.3):
+	
+	Remove support for old libxml2
+
+2007-05-06 17:31  gary
+
+	* samsara/handlers/: markup.py (1.10), serialize.py (1.1), style.py
+	(1.1):
+	
+	Split the markup handler into separate style and serialize handlers
+
+2007-05-06 16:50  gary
+
+	* samsara/: spider.py (1.5), handlers/markup.py (1.9):
+	
+	Remove the ability to specify the output filename when spidering
+
 2007-05-05 12:25  gary
 
 	* samsara/server.py (1.13):
