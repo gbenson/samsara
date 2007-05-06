@@ -9,14 +9,6 @@ class MarkupHandler(server.HandlerClass):
 
     def handle(self, r):
         if r.type == "text/xml":
-            node = r.payload.children
-            while node:
-                if (node.type, node.name) == ("pi", "samsara"):
-                    # XXX should parse this properly
-                    if node.getContent() != 'output="index.shtml"':
-                        raise ValueError, "unhandled directive"
-                    r.filename = "index.shtml"
-                node = node.next
             doc = self.xmlctx.applyStylesheetPI(r.payload)
             try:
                 r.payload.freeDoc()
