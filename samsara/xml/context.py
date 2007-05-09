@@ -42,60 +42,34 @@ class XMLContext:
         self.__validate(doc)
         return doc
 
-    def __parseXSLFile(self, path):
-        """Parse an XSLT stylesheet building the associated structures
-        """
-        doc = self.parseFile(path)
-        style, errors = intercept.intercept(STREAMS,
-                                            libxslt.parseStylesheetDoc, doc)
-        if style is None or errors:
-            raise XMLError, errors + "error: can't load %s" % path
-        return style
-
-    def __applyStylesheet(self, doc, style, params):
-        """The core of applyStylesheet and applyStylesheetPI
-        """
-        params = params.copy()
-        for param in params.keys():
-            if (type(params[param]) != types.InstanceType or
-                not isinstance(params[param], libxml2.xmlNode)):
-                params[param] = "'" + str(params[param]) + "'"
-
-        self.xpathctx.install()
-        try:
-            result, errors = intercept.intercept(
-                STREAMS, style.applyStylesheet, doc, params)
-        finally:
-            self.xpathctx.remove()
-
-        if result is None or errors:
-            raise XMLError, errors + "error: can't apply stylesheet"
-        return result
-
     def applyStylesheet(self, doc, path, params = {}):
         """Apply an XSLT stylesheet to a document.
         """
         self.__validate(doc)
 
-        style = self.__parseXSLFile(path)
-
-        try:
-            return self.__applyStylesheet(doc, style, params)
-        finally:
-            style.freeStylesheet()
-
-    def applyStylesheetPI(self, doc, params = {}):
-        """Apply an XSLT stylesheet (referenced in a PI) to a document.
-        """
-        self.__validate(doc)
-
+        sdoc = self.parseFile(path)
         style, errors = intercept.intercept(STREAMS,
-                                            libxslt.loadStylesheetPI, doc)
+                                            libxslt.parseStylesheetDoc, sdoc)
         if style is None or errors:
-            raise XMLError, errors + "error: can't load stylesheet"
+            raise XMLError, errors + "error: can't load %s" % path
 
         try:
-            return self.__applyStylesheet(doc, style, params)
+            params = params.copy()
+            for param in params.keys():
+                if (type(params[param]) != types.InstanceType or
+                    not isinstance(params[param], libxml2.xmlNode)):
+                    params[param] = "'" + str(params[param]) + "'"
+
+            self.xpathctx.install()
+            try:
+                result, errors = intercept.intercept(
+                    STREAMS, style.applyStylesheet, doc, params)
+            finally:
+                self.xpathctx.remove()
+
+            if result is None or errors:
+                raise XMLError, errors + "error: can't apply stylesheet"
+            return result
         finally:
             style.freeStylesheet()
 
