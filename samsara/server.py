@@ -30,23 +30,34 @@ class HandlerClass:
         """Register an XML document to maintain a cached copy of.
         """
         assert not self.docs.has_key(path)
-        self.docs[path] = [None, 0, name]
+        self.docs[path] = (None, 0, name)
+
+    def loadAndMaybeRegisterDocument(self, path, name = None):
+        """Load an XML document, registering it with the cache
+        if it isn't already.
+        """
+        if not self.docs.has_key(path):
+            self.registerDocument(path, name)
+        self.__updateDocument(path)
+        return self.docs[path][0]
 
     def updateDocuments(self):
         """Ensure all registered documents are up to date.
         """
-        for path, entry in self.docs.items():
-            doc, old_mtime, name = entry
-            mtime = os.path.getmtime(path)
-            if mtime <= old_mtime:
-                continue
-            if doc is not None:
-                doc.freeDoc()
-            doc = self.xmlctx.parseFile(path)
-            if name is not None:
-                setattr(self, name, doc)
-            entry[0] = doc
-            entry[1] = mtime
+        for path in self.docs.keys():
+            self.__updateDocument(path)
+
+    def __updateDocument(self, path):
+        doc, old_mtime, name = self.docs[path]
+        mtime = os.path.getmtime(path)
+        if mtime <= old_mtime:
+            return
+        if doc is not None:
+            doc.freeDoc()
+        doc = self.xmlctx.parseFile(path)
+        if name is not None:
+            setattr(self, name, doc)
+        self.docs[path] = (doc, mtime, name)
 
 class Request:
     """Samsara request, the argument to all handler handle methods
