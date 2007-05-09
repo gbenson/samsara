@@ -19,31 +19,34 @@ class HandlerClass:
     def __init__(self, root, xmlctx):
         self.root = root
         self.xmlctx = xmlctx
-        self.docs = []
+        self.docs = {}
 
     def __del__(self):
-        for path, name, stamp in self.docs:
-            if hasattr(self, name):
-                getattr(self, name).freeDoc()
+        for doc, old_mtime, name in self.docs.values():
+            if doc is not None:
+                doc.freeDoc()
 
-    def registerDocument(self, path, name):
+    def registerDocument(self, path, name = None):
         """Register an XML document to maintain a cached copy of.
         """
-        self.docs.append([path, name, 0])
+        assert not self.docs.has_key(path)
+        self.docs[path] = [None, 0, name]
 
     def updateDocuments(self):
         """Ensure all registered documents are up to date.
         """
-        for i in xrange(len(self.docs)):
-            path, name, old_mtime = self.docs[i]
+        for path, entry in self.docs.items():
+            doc, old_mtime, name = entry
             mtime = os.path.getmtime(path)
             if mtime <= old_mtime:
                 continue
-            if hasattr(self, name):
-                getattr(self, name).freeDoc()
+            if doc is not None:
+                doc.freeDoc()
             doc = self.xmlctx.parseFile(path)
-            setattr(self, name, doc)
-            self.docs[i][2] = mtime
+            if name is not None:
+                setattr(self, name, doc)
+            entry[0] = doc
+            entry[1] = mtime
 
 class Request:
     """Samsara request, the argument to all handler handle methods
