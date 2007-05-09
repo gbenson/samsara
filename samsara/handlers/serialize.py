@@ -1,6 +1,6 @@
 from samsara import server
 
-class SerializeHandler(server.HandlerClass):
+class XMLSerializer(server.HandlerClass):
     """Serialize XML data
     """
     priority = -75

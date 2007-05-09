@@ -2,6 +2,8 @@ import sys
 import os
 import urlparse
 import posixpath
+import operator
+import types
 from samsara.util import extractlinks
 from samsara.util import loader
 from samsara.xml import context
@@ -130,8 +132,13 @@ class SamsaraServer(loader.Loader):
     def moduleLoaded(self, name, module):
         """Callback called when a module is (re)loaded
         """
-        klass = getattr(module, name.capitalize() + "Handler")
-        self.handlers[name] = klass(self.root, self.xmlctx)
+        self.handlers[name] = [
+            item(self.root, self.xmlctx)
+            for item in [getattr(module, attr)
+                         for attr in dir(module)
+                         if not attr.startswith("_")]
+            if type(item) == types.ClassType
+               and issubclass(item, HandlerClass)]
         
     def moduleUnloaded(self, name):
         """Callback called when a module is unloaded
@@ -144,7 +151,7 @@ class SamsaraServer(loader.Loader):
         r = Request(uri)
 
         self.updateCache()
-        handlers = map(lambda k: self.handlers[k], self.handlers.keys())
+        handlers = reduce(operator.add, self.handlers.values())
         handlers.sort(lambda a, b: b.priority - a.priority)
         for h in handlers:
             h.updateDocuments()

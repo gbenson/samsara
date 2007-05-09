@@ -1,7 +1,7 @@
 import os
 from samsara import server
 
-class StyleHandler(server.HandlerClass):
+class XMLStyler(server.HandlerClass):
     """Apply stylesheets to XML data
     """
     priority = -50
