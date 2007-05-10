@@ -79,6 +79,12 @@ class Request:
             self.payload = open(self.payload, "r").read()
         return self.payload
 
+    def writePayload(self, path):
+        if os.path.exists(self.payload):
+            os.link(self.payload, path)
+        else:
+            open(path, "w").write(self.payload)
+
     def links(self):
         """Extract all URLs from the response's body
         """
