@@ -59,6 +59,12 @@ class HandlerClass:
             setattr(self, name, doc)
         self.docs[path] = (doc, mtime, name)
 
+class File:
+    """A request payload that has not yet been read from disk
+    """
+    def __init__(self, path):
+        self.path = path
+
 class Request:
     """Samsara request, the argument to all handler handle methods
     """
@@ -75,13 +81,13 @@ class Request:
             self.payload.freeDoc()
 
     def getPayload(self):
-        if os.path.exists(self.payload):
-            self.payload = open(self.payload, "r").read()
+        if isinstance(self.payload, File):
+            self.payload = open(self.payload.path, "r").read()
         return self.payload
 
     def writePayload(self, path):
-        if os.path.exists(self.payload):
-            os.link(self.payload, path)
+        if isinstance(self.payload, File):
+            os.link(self.payload.path, path)
         else:
             open(path, "w").write(self.payload)
 

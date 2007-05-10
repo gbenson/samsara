@@ -21,4 +21,4 @@ class FileHandler(server.HandlerClass):
         else:
             if r.type == "application/x-sh":
                 r.type = "text/plain"
-            r.payload = path
+            r.payload = server.File(path)
