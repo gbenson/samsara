@@ -1,3 +1,15 @@
+2007-05-10 10:20  gary
+
+	* samsara/: server.py (1.18), handlers/file.py (1.6):
+	
+	Make the link-static-files logic less hacky
+
+2007-05-10 09:59  gary
+
+	* samsara/: server.py (1.17), spider.py (1.6):
+	
+	Move payload writing logic into request
+
 2007-05-09 12:42  gary
 
 	* samsara/server.py (1.16):
