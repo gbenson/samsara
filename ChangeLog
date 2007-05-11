@@ -1,3 +1,9 @@
+2007-05-11 15:50  gary
+
+	* samsara/server.py (1.19):
+	
+	Fix a double-free
+
 2007-05-10 10:20  gary
 
 	* samsara/: server.py (1.18), handlers/file.py (1.6):
