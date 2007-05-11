@@ -53,6 +53,7 @@ class HandlerClass:
         if mtime <= old_mtime:
             return
         if doc is not None:
+            del self.docs[path]
             doc.freeDoc()
         doc = self.xmlctx.parseFile(path)
         if name is not None:
