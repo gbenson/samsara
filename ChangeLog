@@ -1,3 +1,9 @@
+2007-05-18 14:12  gary
+
+	* samsara/xml/context.py (1.11):
+	
+	Make entities work
+
 2007-05-11 15:50  gary
 
 	* samsara/server.py (1.19):
