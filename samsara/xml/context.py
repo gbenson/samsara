@@ -36,7 +36,11 @@ class XMLContext:
     def parseFile(self, path):
         """Parse an XML file and build a tree
         """
-        doc, errors = intercept.intercept(STREAMS, libxml2.parseFile, path)
+        saved = libxml2.substituteEntitiesDefault(True)
+        try:
+            doc, errors = intercept.intercept(STREAMS, libxml2.parseFile, path)
+        finally:
+            libxml2.substituteEntitiesDefault(saved)
         if doc is None or errors:
             raise XMLError, errors + "error: can't load %s" % path
         self.__validate(doc)
