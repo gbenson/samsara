@@ -1,3 +1,9 @@
+2007-05-30 12:58  gary
+
+	* samsara/server.py (1.20):
+	
+	Don't break forever if a registered document fails to load
+
 2007-05-18 14:12  gary
 
 	* samsara/xml/context.py (1.11):
