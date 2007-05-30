@@ -55,6 +55,7 @@ class HandlerClass:
         if doc is not None:
             del self.docs[path]
             doc.freeDoc()
+        self.docs[path] = (None, 0, name)
         doc = self.xmlctx.parseFile(path)
         if name is not None:
             setattr(self, name, doc)
