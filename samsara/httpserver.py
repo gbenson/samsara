@@ -13,6 +13,8 @@ class HTTPServer(SocketServer.TCPServer):
     be developed without undue complexity.
     """
 
+    allow_reuse_address = 1
+
     def __init__(self, host, port, samsara):
         """Constructor: may be extended, do not override.
         """
