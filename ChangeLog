@@ -1,3 +1,9 @@
+2009-12-10 16:09  gary
+
+	* samsara/handlers/style.py (1.5.4.1):
+	
+	Bug!
+
 2007-11-17 11:48  gary
 
 	* COPYING (1.1.4.2), samsara/.cvsignore (1.1.8.1),
