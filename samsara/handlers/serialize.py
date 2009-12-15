@@ -11,7 +11,8 @@ class XMLSerializer(server.HandlerClass):
         if r.type != "text/xml":
             return
         doc = r.payload
-        r.payload = doc.serialize("utf-8", 1)
+        r.payload = doc.serialize("utf-8", 1).replace(
+            ' xmlns:ssr="http://inauspicious.org/samsara"', "")
         r.type = "text/html"
         doc.freeDoc()
 
