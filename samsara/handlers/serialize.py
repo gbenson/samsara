@@ -16,6 +16,6 @@ class XMLSerializer(server.HandlerClass):
         doc.freeDoc()
 
         hunt = 'xmlns="%s"' % self.xhtmlns
-        found = r.payload.find('xmlns="')
+        found = r.payload.find('xmlns')
         assert found != -1 and r.payload[found:found + len(hunt)] == hunt
-        assert r.payload.find('xmlns="', found + len(hunt)) == -1
+        assert r.payload.find('xmlns', found + len(hunt)) == -1
