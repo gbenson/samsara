@@ -6,13 +6,13 @@ class XMLSerializer(server.HandlerClass):
     priority = -75
 
     xhtmlns = "http://www.w3.org/1999/xhtml"
+    rubbish = 'xmlns:ssr="http://inauspicious.org/samsara"'
 
     def handle(self, r):
         if r.type != "text/xml":
             return
         doc = r.payload
-        r.payload = doc.serialize("utf-8", 1).replace(
-            ' xmlns:ssr="http://inauspicious.org/samsara"', "")
+        r.payload = doc.serialize("utf-8", 1).replace(" " + self.rubbish, "")
         r.type = "text/html"
         doc.freeDoc()
 
