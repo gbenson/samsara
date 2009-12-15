@@ -19,7 +19,7 @@ class XMLStyler(server.HandlerClass):
             uri = r.uri
         if not uri.startswith(os.sep):
             uri = os.sep + uri
-        style = os.path.join(self.root, dir, style)
+        style = os.path.normpath(os.path.join(self.root, dir, style))
         doc = r.payload
         r.payload = self.xmlctx.applyStylesheet(doc, style, {"uri": uri})
         doc.freeDoc()
