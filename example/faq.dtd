@@ -1,0 +1,14 @@
+<!ENTITY % CommonMarkup SYSTEM "markup.dtd">
+%CommonMarkup;
+
+<!ELEMENT faq (copyright, entries)>
+<!ELEMENT copyright (#PCDATA)>
+<!ELEMENT entries (entry*)>
+<!ELEMENT entry (question, answer, links)>
+<!ATTLIST entry id ID #REQUIRED>
+<!ATTLIST entry top (yes|no) "no">
+<!ELEMENT question (#PCDATA)>
+<!ELEMENT answer %Block;>
+<!ELEMENT links (link+)>
+<!ELEMENT link EMPTY>
+<!ATTLIST link question IDREF #REQUIRED>

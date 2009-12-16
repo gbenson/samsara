@@ -1,0 +1,17 @@
+<!ENTITY % CommonMarkup SYSTEM "markup.dtd">
+%CommonMarkup;
+
+<!ELEMENT page (head, body)>
+<!ELEMENT head (title, (copyright|keywords|description|robots)*)>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT copyright (#PCDATA)>
+<!ELEMENT keywords (keyword+)>
+<!ELEMENT keyword (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT robots (#PCDATA)>
+<!ELEMENT body ((%block;)*, findoutmore?)>
+<!ELEMENT findoutmore (faq)+>
+<!ELEMENT faq EMPTY>
+<!ATTLIST faq
+  question CDATA #REQUIRED
+  text     CDATA #IMPLIED>

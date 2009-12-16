@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE errors SYSTEM "errors.dtd">
+<errors>
+  <error code="401">
+    <short>Authorization Required</short>
+    <long>
+      You don't have authorization to access <url/> on this server.
+    </long>
+  </error>
+  <error code="403">
+    <short>Forbidden</short>
+    <long>
+      You don't have permission to access <url/> on this server.
+    </long>
+  </error>
+  <error code="404">
+    <short>Not Found</short>
+    <long>
+      The requested URL <url/> was not found on this server.
+    </long>
+  </error>
+  <error code="410">
+    <short>Gone</short>
+    <long>
+      The requested resource <url/> is no longer available on this
+      server.  <br/>Please remove all references to this resource.
+    </long>
+  </error>
+</errors>

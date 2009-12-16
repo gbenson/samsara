@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<!DOCTYPE navbar SYSTEM "navbar.dtd">
+<navbar>
+  <a href="/">Home</a>
+  <a href="questions.html">Questions</a>
+  <a href="mailto:gary@relaxshiatsu.co.uk">Email</a>
+</navbar>

@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE page SYSTEM "page.dtd">
+<?xml-stylesheet href="page.xsl" type="text/xsl"?>
+<page>
+  <head>
+    <title>Looking for a way to relax?</title>
+    <copyright>2007 Gary Benson</copyright>
+    <keywords>
+      <keyword>shiatsu bath</keyword>
+      <keyword>bath shiatsu</keyword>
+      <keyword>shiatsu in bath</keyword>
+    </keywords>
+    <description>
+      Relax Shiatsu is the Bath shiatsu practice of Gary Benson.
+    </description>
+  </head>
+  <body>
+    <div class="topRightPhoto">
+      <img src="daisy.jpg" width="275" height="313" alt=""/>
+    </div>
+    <p>
+      Everyday life can be hectic.  Just getting everything done can
+      take its toll on our bodies, leaving us tired and irritable.
+      It's important to take some time for yourself.
+    </p>
+    <p>
+      Shiatsu is a hands-on therapy rooted in traditional Chinese
+      medicine.  By gently moving and stretching the body, shiatsu
+      aims to restore a natural state of balance and harmony.  The
+      result is a deep sense of relaxation.
+    </p>
+    <p>
+      Shiatsu is performed fully clothed.  A typical session lasts
+      about an hour and costs &price;.
+    </p>
+    <findoutmore>
+      <faq question="whatIsShiatsu"/>
+      <faq question="howShiatsuCanHelp"/>
+      <!-- faq question="whoAreYou"/ -->
+    </findoutmore>
+  </body>
+</page>
+<!--
+  Local Variables:
+  mode: html
+  End:
+  -->

@@ -1,0 +1,96 @@
+body, div {
+  margin: 0;
+  padding: 0;
+}
+#pageWrap {
+  margin: 0 auto;
+  width: 750px;
+}
+#pageHead {
+  height: 100px;
+  background: url(page-head.png);
+  position: relative;
+}
+#logoLink {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 467px;
+  height: 80px;
+  display: block;
+}
+#contacts {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+#pageBody {
+  margin: 10px;
+  position: relative;
+}
+#contentHead {
+  height: 10px;
+  background: url(content-head.png);
+}
+#contentFoot {
+  height: 10px;
+  background: url(content-foot.png);
+}
+#content {
+  /* Some top and bottom padding is required to trap collapsing margins.
+   *  -- http://www.w3.org/TR/CSS21/box.html#collapsing-margins
+   */
+  padding: 5px 15px;
+}
+#navBar {
+  float: right;
+  margin-top: -7px; /* XXX font size specific */
+  padding-left: 10px;
+  padding-bottom: 10px;
+}
+h1 {
+  margin-top: 0;
+}
+.topRightPhoto {
+  float: right;
+  padding-left: 15px;
+  padding-bottom: 15px;
+}
+#findOutMore {
+  /* "overflow: hidden" and "overflow: auto" make an element establish
+   * a new block formatting context: an isolated container which will
+   * keep it from flowing into the space occupied by preceding floats.
+   *  -- http://www.gunlaug.no/contents/wd_example_01_02.html
+   *
+   * "overflow: hidden" is preferred over "overflow: auto" because the
+   * latter causes Mac IE to always show scrollbars.
+   *  -- http://www.ejeliot.com/blog/59
+   */
+  overflow: hidden;
+  margin: 1.5em 0;
+  background: url(box-br.png) no-repeat bottom right;
+  position: relative;
+}
+#findOutMoreHead {
+  background: url(box-tr.png) no-repeat top right;
+}
+#findOutMore h2 {
+  background: url(box-tl.png) no-repeat top left;
+  margin: 0;
+  padding: 15px 15px 0;
+}
+#findOutMoreBody {
+  background: url(box-bl.png) no-repeat bottom left;
+  padding: 0.5em 15px 20px 15px;
+}
+#findOutMore ul {
+  margin: 0;
+}
+#allQuestions {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+}
+#standardFooter {
+  margin-bottom: 0;
+}

@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<!DOCTYPE faq SYSTEM "faq.dtd">
+<faq>
+ <copyright>2007 Gary Benson</copyright>
+ <!-- XXX this should probably be page-by-page -->
+ <entries>
+  <entry id="whatIsShiatsu" top="yes">
+   <question>
+     What is shiatsu?
+   </question>
+   <answer>
+    <p>
+     Shiatsu is a hands-on therapy that combines modern anatomy and
+     physiology with traditional Chinese medicine.
+    </p>
+    <p>
+     In shiatsu mind, body and spirit are not separate, but viewed as
+     different aspects of an underlying whole.  Pain and disease are
+     seen as imbalances in the flow of energy through this whole.  By
+     gently stretching and moving the body, shiatsu aims to restore
+     the flow of this energy to its natural state of balance and
+     harmony.
+    </p>
+    <p>
+     Treating the person as a whole makes shiatsu relevant to many
+     conditions, be they physical, emotional or spiritual in nature.
+     Problems of the body are often reflections of problems of the
+     mind or of the heart, and working the body can help to initiate a
+     deeper healing.
+    </p>
+    <p>
+     Shiatsu is performed fully clothed, with the receiver lying on a
+     futon.  A typical session lasts about an hour<!-- and costs
+     &price; -->.
+    </p>
+   </answer>
+   <links>
+    <link question="howShiatsuCanHelp"/>
+    <link question="whatWillHappen"/>
+   </links>
+  </entry>
+  <entry id="howShiatsuCanHelp" top="yes">
+   <question>
+    How can shiatsu help me?
+   </question>
+   <answer>
+    <p>
+     Shiatsu is a form of healing, but that doesn't mean you need to
+     be ill to benefit from it.  Many people have shiatsu as part of
+     their regime to maintain good health: a small amount of regular
+     attention helps prevent little things turning into bigger
+     problems.  Others have shiatsu as a tonic, to relax and
+     revitalise themselves.  Everyday life can take it out of you,
+     and shiatsu is an excellent way to put something back.
+    </p>
+   </answer>
+   <links>
+    <link question="whatWillHappen"/>
+    <link question="whatToWear"/>
+   </links>
+  </entry>
+  <entry id="whatToWear" top="yes">
+   <question>
+    What should I wear for my shiatsu?
+   </question>
+   <answer>
+    <p>
+     Shiatsu is performed fully clothed, so please bring or wear
+     loose, warm, comfortable clothing.  A sweatshirt and tracksuit
+     trousers would be ideal.  Long sleeves and socks are recommended
+     as your temperature may drop during the treatment.  Jeans are not
+     ideal, and please don't wear a skirt or a dress.  You may change
+     here if you like.
+    </p>
+   </answer>
+   <links>
+    <link question="whatWillHappen"/>
+    <link question="howWillIFeelAfter"/>
+   </links>
+  </entry>
+  <entry id="whatWillHappen" top="yes">
+   <question>
+    What will happen during my shiatsu session?
+   </question>
+   <answer>
+    <p>
+     Your shiatsu session will start with a consultation.  I'll ask a
+     few questions about your health: how you are feeling, whether you
+     have any areas of tension or soreness, and if you have any
+     specific medical conditions.  This is basically where I get to
+     find out what you would like from your shiatsu.  We'll discuss
+     what will happen in your treatment, and I'll answer any questions
+     you may have.
+    </p>
+    <p>
+     Then comes the treatment itself.  This lasts 40-45 minutes.
+     Afterwards there will be a little time to talk, and I may show
+     you a stretch or two you can try yourself if I found any
+     particular areas of stiffness.
+    </p>
+   </answer>
+   <links>
+    <link question="howWillIFeelAfter"/>
+    <link question="whatToWear"/>
+   </links>
+  </entry>
+  <entry id="howWillIFeelAfter" top="yes">
+   <question>
+    How will I feel after my shiatsu?
+   </question>
+   <answer>
+    <p>
+     For most people the most obvious result of their shiatsu is a
+     deep feeling of relaxation and calm.  Some people find it leaves
+     them feeling sleepy; others report feeling energised and
+     invigorated.  One interpretation of shiatsu is that it gently
+     reminds your body of what it needs, so if you need sleep then
+     you'll feel sleepy and if you need to go out and do something
+     then you'll feel like going out and doing something.  Every
+     single person and every single treatment is different, and the
+     full effects may take some time to unfold.
+    </p>
+   </answer>
+   <links>
+    <link question="whatToWear"/>
+   </links>
+  </entry>
+ </entries>
+</faq>
+<!--
+  Local Variables:
+  mode: html
+  End:
+  -->

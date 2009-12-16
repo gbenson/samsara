@@ -1,0 +1,47 @@
+<!ENTITY % inline "a | br | img | em | code | abbr | ssi">
+<!ENTITY % Inline "(#PCDATA | %inline;)*">
+
+<!ENTITY % block "p | div | ul">
+<!ENTITY % Block "(%block;)*">
+
+<!ENTITY % Flow "(#PCDATA | %block; | %inline;)*">
+
+<!ELEMENT div %Flow;>
+<!ATTLIST div
+  class  CDATA #REQUIRED>
+
+<!ELEMENT p %Inline;>
+
+<!ELEMENT ul (li)+>
+
+<!ELEMENT li %Flow;>
+
+<!ELEMENT a %Inline;> <!-- strictly this should be %Inline; excluding a -->
+<!ATTLIST a
+  href   CDATA #REQUIRED>
+
+<!ELEMENT br EMPTY>
+
+<!ELEMENT em %Inline;>
+
+<!ELEMENT code %Inline;>
+
+<!ELEMENT abbr %Inline;>
+<!ATTLIST abbr
+  title  CDATA #REQUIRED>
+
+<!ELEMENT img EMPTY>
+<!ATTLIST img
+  class  CDATA #IMPLIED
+  src    CDATA #REQUIRED
+  alt    CDATA #REQUIRED
+  height CDATA #REQUIRED
+  width  CDATA #REQUIRED>
+
+<!ELEMENT ssi (#PCDATA)>
+
+<!ENTITY mdash "&#8212;">
+<!ENTITY ldquo "&#8220;">
+<!ENTITY rdquo "&#8221;">
+
+<!ENTITY price "£20">

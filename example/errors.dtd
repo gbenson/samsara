@@ -1,0 +1,7 @@
+<!ELEMENT errors (error*)>
+<!ELEMENT error (short, long)>
+<!ATTLIST error code CDATA #REQUIRED> <!-- ID can't be numeric :( -->
+<!ELEMENT short (#PCDATA)>
+<!ELEMENT long (#PCDATA|url|br)*>
+<!ELEMENT url EMPTY>
+<!ELEMENT br EMPTY>

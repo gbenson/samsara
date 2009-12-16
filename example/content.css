@@ -1,0 +1,79 @@
+body {
+  font-family: verdana, sans;
+  /* Using a percentage here and ems everywhere else seems the least
+   * insane way to specify font sizes.  Just don't drop below 76%!
+   *  -- http://www.fjordaan.net/tests/fontsize-em-perc.html
+   */   
+  font-size: 80%;
+  background: #eee;
+  color: black;
+}
+#content {
+  background: white;
+}
+h1 {
+  font-family: tahoma, verdana, sans;
+}
+li, p {
+  line-height: 1.5em;
+}
+a:link {
+  color: blue;
+}
+a:visited {
+  color: navy;
+}
+a:active {
+  color: red;
+}
+#contacts {
+  text-align: right;
+  color: white;
+}
+#contacts a:link, #contacts a:visited, #contacts a:active {
+  font-size: 0.8em;
+  text-decoration: none;
+}
+#contacts a:link, #contacts a:visited {
+  color: white;
+}
+#contacts a:active {
+  color: red;
+}
+.navSep {
+  color: #5a9617;
+  padding-left: 0.15em;
+  padding-right: 0.15em;
+}
+#findOutMore h2 {
+  font-size: 1.1em;
+  line-height: 1.1em;
+  color: #5a9617;
+}
+#findOutMore ul {
+  padding-left: 2px;
+  list-style: none;
+}
+#findOutMore li {
+  /* Use background images to add images to the background of
+   * each list item.  This method gives much more consistent
+   * results than simply replacing the bullets with images.
+   *  -- http://css.maxdesign.com.au/listamatic/vertical05.htm
+   */
+  background-image: url(bullet.png);
+  background-repeat: no-repeat;
+  padding-left: 15px;
+  background-position: 0 0.5em;
+}	
+#allQuestions {
+  font-size: 0.8em;
+}
+#allQuestions:link, #allQuestions:visited {
+  color: #5a9617;
+}
+#allQuestions:active {
+  color: red;
+}
+.abbreviation {
+  display: none;
+}

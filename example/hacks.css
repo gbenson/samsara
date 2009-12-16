@@ -1,0 +1,32 @@
+/* Centering block elements using auto margins only works in IE from
+ * version 6 onwards, and even then only when in "standard compliant"
+ * mode.  Happily those browsers will incorrectly apply text alignment
+ * to block level elements, so we use that instead.
+ *  -- http://css-discuss.incutio.com/?page=CenteringBlockElement
+ */
+body {
+  text-align: center;
+}
+#pageWrap {
+  text-align: left;
+}
+
+/* Setting the MS-proprietary zoom attribute for an element causes
+ * that element to gain layout.
+ *  -- http://www.satzansatz.de/cssd/onhavinglayout.html
+ *
+ * This fixes the following bugs:
+ *  - On #content, causes the photo on the front page and the
+ *    navigation bar on all pages to become visible in IE6.
+ *  - On #pageBody, corrects the position of #findOutMore in
+ *    IE6.
+ *  - On #findOutMore, stops the find out more box from extending
+ *    under the photo (containing floats using "overflow: hidden"
+ *    only works in IE7).
+ *  - On #findOutMoreHead, causes the top left corner of the box to
+ *    become visible in IE6.
+ *  - On #findOutMore ul, causes the bullets to become visible in IE6.
+ */
+#content, #pageBody, #findOutMore, #findOutMoreHead, #findOutMore ul {
+  zoom: 1;
+}

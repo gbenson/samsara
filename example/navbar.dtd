@@ -1,0 +1,3 @@
+<!ELEMENT navbar (a*)>
+<!ELEMENT a (#PCDATA)>
+<!ATTLIST a href CDATA #REQUIRED>
