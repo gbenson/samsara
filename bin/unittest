@@ -2,7 +2,7 @@
 
 ### Preamble: allow this program to be run without PYTHON_PATH abuse
 import sys, os
-samsara_dir = os.path.split(os.path.split(os.path.abspath(sys.argv[0]))[0])[0]
+samsara_dir = os.path.dirname(os.path.dirname(os.path.realpath(sys.argv[0])))
 if samsara_dir not in sys.path:
     sys.path.insert(0, samsara_dir)
 ### end of preamble
