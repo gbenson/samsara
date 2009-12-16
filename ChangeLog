@@ -1,3 +1,39 @@
+2009-12-15 20:34  gary
+
+	* samsara/handlers/serialize.py (1.8):
+	
+	If this is going to be permanent then it may as well be neat
+
+2009-12-15 20:29  gary
+
+	* samsara/handlers/style.py (1.6):
+	
+	Branch merge
+
+2009-12-15 20:27  gary
+
+	* samsara/handlers/serialize.py (1.7):
+	
+	No, lets not...
+
+2009-12-15 20:26  gary
+
+	* samsara/handlers/serialize.py (1.6):
+	
+	No, lets backtrack...
+
+2009-12-15 17:35  gary
+
+	* samsara/handlers/serialize.py (1.5):
+	
+	Fuck off! :)
+
+2009-12-15 17:14  gary
+
+	* samsara/handlers/serialize.py (1.4):
+	
+	More stringent xmlns scragging
+
 2009-12-10 16:09  gary
 
 	* samsara/handlers/style.py (1.5.4.1):
