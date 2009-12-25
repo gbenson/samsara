@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:ssr="http://inauspicious.org/samsara"
-  xsl:exclude-result-prefixes='ssr'>
+  extension-element-prefixes="ssr">
 
   <xsl:param name="showAll"/>
 
