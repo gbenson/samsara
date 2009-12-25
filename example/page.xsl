@@ -14,7 +14,7 @@
     doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"/>
 
   <xsl:template match="page">
-    <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+    <html lang="en" xml:lang="en">
       <xsl:apply-templates/>
     </html>
   </xsl:template>
