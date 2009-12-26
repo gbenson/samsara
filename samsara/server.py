@@ -61,6 +61,9 @@ class HandlerClass:
             setattr(self, name, doc)
         self.docs[path] = (doc, mtime, name)
 
+    def __str__(self):
+        return "%4d %s" % (self.priority, repr(self))
+        
 class File:
     """A request payload that has not yet been read from disk
     """
@@ -184,6 +187,11 @@ class SamsaraServer(loader.Loader):
         for h in handlers:
             h.updateDocuments()
             h.handle(r)
+
+        if r.uri == "DEBUG":
+            r.type    = "text/plain"
+            r.payload = "\n".join(map(str, handlers)) + "\n"
+            return r
 
         if r.payload is None:
             raise NotFoundError, "%s not found" % uri
