@@ -11,7 +11,7 @@ from getopt import getopt, GetoptError
 from samsara.httpserver import HTTPServer
 from samsara.server import SamsaraServer
 
-interface = ""
+interface = "127.0.0.1"
 port = 2420
 
 usage = """\
