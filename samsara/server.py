@@ -85,6 +85,13 @@ class Request:
         if hasattr(self, "type") and self.type == "text/xml":
             self.payload.freeDoc()
 
+    class Redirect(Exception):
+        pass
+
+    def redirect(self, uri):
+        assert self.payload is None
+        raise self.Redirect("/" + uri)
+
     def getPayload(self):
         if isinstance(self.payload, File):
             self.payload = open(self.payload.path, "r").read()
@@ -179,19 +186,27 @@ class SamsaraServer(loader.Loader):
     def get(self, uri):
         """Serve a page
         """
-        r = Request(uri)
-
         self.updateCache()
         handlers = reduce(operator.add, self.handlers.values())
         handlers.sort(lambda a, b: b.priority - a.priority)
-        for h in handlers:
-            h.updateDocuments()
-            h.handle(r)
+        for handler in handlers:
+            handler.updateDocuments()
 
-        if r.uri == "DEBUG":
-            r.type    = "text/plain"
-            r.payload = "\n".join(map(str, handlers)) + "\n"
-            return r
+        uris = {}
+        while True:
+            print "Trying", repr(uri)
+            if uris.has_key(uri):
+                raise NotFoundError, "circular redirect"
+            uris[uri] = True
+
+            r = Request(uri)
+            try:
+                for handler in handlers:
+                    handler.handle(r)
+            except Request.Redirect, e:
+                uri = str(e)
+                continue
+            break
 
         if r.payload is None:
             raise NotFoundError, "%s not found" % uri
