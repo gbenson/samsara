@@ -194,7 +194,6 @@ class SamsaraServer(loader.Loader):
 
         uris = {}
         while True:
-            print "Trying", repr(uri)
             if uris.has_key(uri):
                 raise NotFoundError, "circular redirect"
             uris[uri] = True
