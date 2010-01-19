@@ -22,15 +22,15 @@ class HandlerClass:
         self.docs = {}
 
     def __del__(self):
-        for doc, old_mtime, name in self.docs.values():
+        for doc, old_mtime, name, callback in self.docs.values():
             if doc is not None:
                 doc.freeDoc()
 
-    def registerDocument(self, path, name = None):
+    def registerDocument(self, path, name = None, callback = None):
         """Register an XML document to maintain a cached copy of.
         """
         assert not self.docs.has_key(path)
-        self.docs[path] = (None, 0, name)
+        self.docs[path] = (None, 0, name, callback)
 
     def loadAndMaybeRegisterDocument(self, path, name = None):
         """Load an XML document, registering it with the cache
@@ -48,7 +48,7 @@ class HandlerClass:
             self.__updateDocument(path)
 
     def __updateDocument(self, path):
-        doc, old_mtime, name = self.docs[path]
+        doc, old_mtime, name, callback = self.docs[path]
         mtime = os.path.getmtime(path)
         if mtime <= old_mtime:
             return
@@ -59,7 +59,9 @@ class HandlerClass:
         doc = self.xmlctx.parseFile(path)
         if name is not None:
             setattr(self, name, doc)
-        self.docs[path] = (doc, mtime, name)
+        self.docs[path] = (doc, mtime, name, callback)
+        if callback is not None:
+            callback(doc)
 
     def __str__(self):
         return "%4d %s" % (self.priority, repr(self))
