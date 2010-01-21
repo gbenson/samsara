@@ -4,6 +4,7 @@ import urlparse
 import posixpath
 import operator
 import types
+import weakref
 from samsara.util import extractlinks
 from samsara.util import loader
 from samsara.xml import context
@@ -16,15 +17,27 @@ class HandlerClass:
     """
     priority = 0
 
-    def __init__(self, root, xmlctx):
-        self.root = root
-        self.xmlctx = xmlctx
+    def __init__(self, server):
+        self.__server = server
         self.docs = {}
 
     def __del__(self):
-        for doc, old_mtime, name, callback in self.docs.values():
-            if doc is not None:
-                doc.freeDoc()
+        if hasattr(self, "docs"):
+            for doc, old_mtime, name, callback in self.docs.values():
+                if doc is not None:
+                    doc.freeDoc()
+
+    @property
+    def server(self):
+        return self.__server()
+
+    @property
+    def root(self):
+        return self.server.root
+
+    @property
+    def xmlctx(self):
+        return self.server.xmlctx
 
     def registerDocument(self, path, name = None, callback = None):
         """Register an XML document to maintain a cached copy of.
@@ -169,11 +182,13 @@ class SamsaraServer(loader.Loader):
             self, [user_handlers, sams_handlers], "samsara.handlers")
         self.handlers = {}
 
+        self.weakref = weakref.ref(self)
+
     def moduleLoaded(self, name, module):
         """Callback called when a module is (re)loaded
         """
         self.handlers[name] = [
-            item(self.root, self.xmlctx)
+            item(self.weakref)
             for item in [getattr(module, attr)
                          for attr in dir(module)
                          if not attr.startswith("_")]
