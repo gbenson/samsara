@@ -10,23 +10,27 @@ if samsara_dir not in sys.path:
 from getopt import getopt, GetoptError
 from samsara.spider import spider
 from samsara.server import SamsaraServer
+import time
 
 startpoints = []
 exclusions = []
-profiling = 0
+timed = profiling = False
 
 usage = """\
 Usage: spider [OPTION] ROOT DEST
 
   -s, --startat=PATH    start spidering at this prefix
   -e, --exclude=PATH    do not spider anything starting with this prefix
+  -t  --timed           time the run
   -p, --profile         run in the Python profiler
       --help            display this help and exit
 """
 
 try:
     opts, args = getopt(
-        sys.argv[1:], "s:e:p", ["help", "startat=", "exclude=", "profile"])
+        sys.argv[1:],
+        "s:e:tp",
+        ["help", "startat=", "exclude=", "time", "profile"])
 except GetoptError:
     print usage
     sys.exit(1)
@@ -44,8 +48,10 @@ for o, a in opts:
         startpoints.append(a)
     if o in ("-e", "--exclude"):
         exclusions.append(a)
+    if o in ("-t", "--timed"):
+        timed = True
     if o in ("-p", "--profile"):
-        profiling = 1
+        profiling = True
 
 if not startpoints:
     startpoints.append("/")
@@ -53,8 +59,14 @@ if not startpoints:
 def main():
     spider(SamsaraServer(root), dest, startpoints, exclusions)
 
+if timed:
+    start_time = time.time()
+
 if profiling:
     import profile
     profile.run("main()", "spider.prof")
 else:
     main()
+
+if timed:
+    print "Spidered in %.1f seconds" % (time.time() - start_time)
