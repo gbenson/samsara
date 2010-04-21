@@ -95,6 +95,7 @@ class Request:
 
         self.type = None
         self.payload = None
+        self.implied = []
 
     def __del__(self):
         if hasattr(self, "type") and self.type == "text/xml":
@@ -118,6 +119,12 @@ class Request:
         else:
             open(path, "w").write(self.payload)
 
+    def add_implied(self, link):
+        """Allow the existence of one page to imply the existence of
+        others to the spiderer.
+        """
+        self.implied.append("/" + link)
+            
     def links(self):
         """Extract all URLs from the response's body
         """
@@ -127,6 +134,7 @@ class Request:
             links = extractlinks.htmlExtractLinks(self.getPayload())
         else:
             links = []
+        links.extend(self.implied)
         return map(Link, links)
 
 class Link:
