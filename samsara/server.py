@@ -192,6 +192,20 @@ class SamsaraServer(loader.Loader):
 
         self.weakref = weakref.ref(self)
 
+        self.httpserver = None
+
+    def setHTTPServer(self, httpserver):
+        if httpserver is None:
+            self.__httpserver = None
+        else:
+            self.__httpserver = weakref.ref(httpserver)
+
+    def getHTTPServer(self):
+        if self.__httpserver is not None:
+            return self.__httpserver()
+
+    httpserver = property(getHTTPServer, setHTTPServer)
+
     def moduleLoaded(self, name, module):
         """Callback called when a module is (re)loaded
         """

@@ -20,6 +20,7 @@ class HTTPServer(SocketServer.TCPServer):
         """
         SocketServer.TCPServer.__init__(self, (host,port), self.RequestHandler)
         self.samsara = samsara
+        samsara.httpserver = self
 
     class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         """HTTP request handler for the Samsara HTTP server.
