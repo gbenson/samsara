@@ -30,6 +30,13 @@
           #pageWrap {
             margin: 1em;
           }
+          table {
+            margin-bottom: 1em;
+          }
+          td.right {
+            text-align: right;
+            padding-right: 0.5em;
+          }
         </style>
       </head>
       <body>
@@ -45,6 +52,19 @@
     <h2><xsl:apply-templates/></h2>
   </xsl:template>
 
+  <xsl:template match="handlers">
+    <table>
+      <xsl:apply-templates/>        
+    </table>
+  </xsl:template>
+
+  <xsl:template match="handler">
+    <tr>
+      <td class="right"><xsl:value-of select="@priority"/></td>
+      <td><xsl:value-of select="@path"/></td>
+    </tr>
+  </xsl:template>
+  
   <xsl:template match="form">
     <form action="{@action}">
       <xsl:apply-templates/>        

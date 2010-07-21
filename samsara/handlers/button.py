@@ -3,7 +3,7 @@ from samsara import server
 class SamsaraButton(server.HandlerClass):
     """Add a Samsara button to pages when running in the HTTP server
     """
-    priority = -76
+    priority = -80
 
     html = ('<div style="%s;">' % "; ".join(
             ("position: absolute",
