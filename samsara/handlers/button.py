@@ -27,6 +27,8 @@ class SamsaraButton(server.HandlerClass):
             return
         if r.type != "text/html":
             return
+        if r.uri.startswith("samsara/"):
+            return
 
         payload = r.getPayload()
         start = payload.lower().find("<body")
