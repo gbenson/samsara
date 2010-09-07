@@ -98,10 +98,14 @@ class Request:
         self.payload = None
         self.implied = []
         self.may_be_compressible = False
+        self.buttons = []
 
     def __del__(self):
         if hasattr(self, "type") and self.type == "text/xml":
             self.payload.freeDoc()
+
+    def addButton(self, *button):
+        self.buttons.insert(0, button)
 
     class Redirect(Exception):
         pass

@@ -26,6 +26,7 @@ class SamsaraHandler(server.HandlerClass):
 
     def handle(self, r):
         if not r.uri.startswith(self.prefix):
+            r.addButton("S", "/samsara/")
             return
         uri = r.uri[len(self.prefix):]
 
