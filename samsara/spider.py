@@ -26,9 +26,11 @@ def spider(server, dest, startpoints, exclusions = ()):
                         items[link] = 0
 
             if path[-1] == "/":
-                path += "index.html"
-            if hasattr(response, "filename"):
-                path = os.path.join(os.path.split(path)[0], response.filename)
+                payload = response.payload
+                if isinstance(payload, str) and payload.find("<?php") != -1:
+                    path += "index.php"
+                else:
+                    path += "index.html"
             path = os.path.join(dest, path[1:])
             dir = os.path.split(path)[0]
             if not os.path.isdir(dir):
