@@ -46,15 +46,6 @@ class HandlerClass:
         assert not self.docs.has_key(path)
         self.docs[path] = (None, 0, name, callback)
 
-    def loadAndMaybeRegisterDocument(self, path, name = None):
-        """Load an XML document, registering it with the cache
-        if it isn't already.
-        """
-        if not self.docs.has_key(path):
-            self.registerDocument(path, name)
-        self.__updateDocument(path)
-        return self.docs[path][0]
-
     def updateDocuments(self):
         """Ensure all registered documents are up to date.
         """
