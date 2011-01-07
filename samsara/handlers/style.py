@@ -25,13 +25,13 @@ class XMLStyler(server.HandlerClass):
         doc.freeDoc()
 
     def getStylesheetPI(self, doc):
-        node, pi = doc.get_children(), None
+        node = doc.children
         while node:
             if node.type == "pi" and node.name == "xml-stylesheet":
-                assert pi is None
                 pi = node.getContent()
+                break
             node = node.next
-        if pi is None:
+        else:
             return
         # XXX could parse this properly
         assert pi.startswith('href="') and pi.endswith('" type="text/xsl"')
