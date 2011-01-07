@@ -13,6 +13,8 @@ def spider(server, dest, startpoints, exclusions = ()):
         for path in todo:
             items[path] = 1
             response = server.get(path)
+            server.auto_update = False
+            server.xmlctx.xpathctx.auto_update = False
 
             links = map(lambda l: l.normalizeTo(path),
                         filter(lambda l: l.isLocal(),

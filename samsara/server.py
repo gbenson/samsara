@@ -229,8 +229,9 @@ class SamsaraServer(loader.Loader):
         self.updateCache()
         handlers = reduce(operator.add, self.handlers.values())
         handlers.sort(lambda a, b: b.priority - a.priority)
-        for handler in handlers:
-            handler.updateDocuments()
+        if self.auto_update:
+            for handler in handlers:
+                handler.updateDocuments()
 
         uris = {}
         while True:

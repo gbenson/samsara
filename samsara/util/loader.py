@@ -13,10 +13,13 @@ class Loader:
         self.paths = paths
         self.prefix = prefix + "."
         self.names = []
+        self.auto_update = True
 
     def updateCache(self):
         """Rescan the directory of modules and synchronize with it
         """
+        if not self.auto_update:
+            return
 
         # Build a list of module names which represents our current set
         names = {}
