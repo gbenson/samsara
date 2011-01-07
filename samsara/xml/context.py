@@ -1,3 +1,4 @@
+import os
 import sys
 import types
 import libxml2
@@ -14,12 +15,33 @@ class XMLError(Exception):
     """
     pass
 
+class Stylesheet:
+    """A stylesheet
+    """
+    def __init__(self, xmlctx, path):
+        self.doc = xmlctx.parseFile(path)
+        self.style, errors = intercept.intercept(
+            STREAMS, libxslt.parseStylesheetDoc, self.doc)
+        if self.style is None or errors:
+            raise XMLError, errors + "error: can't load %s" % path
+
+    def __del__(self):
+        if hasattr(self, "style") and self.style is not None:
+            self.style.freeStylesheet()
+        elif hasattr(self, "doc") and self.doc is not None:
+            self.doc.freeDoc()
+
+    def applyStylesheet(self, *args, **kwargs):
+        return self.style.applyStylesheet(*args, **kwargs)
+
 class XMLContext:
     """A manipulator of XML data
     """
     def __init__(self, xpathdir = None):
         self.xpathctx = XPathContext(xpathdir)
         self.validctx = libxml2.newValidCtxt()
+        self.cache_stylesheets = False
+        self.__xslcache = {}
 
     def __validate(self, doc, path = ""):
         """Validate an XML file
@@ -46,36 +68,38 @@ class XMLContext:
         self.__validate(doc)
         return doc
 
+    def getStylesheet(self, path):
+        path = os.path.realpath(path)
+        if self.cache_stylesheets and self.__xslcache.has_key(path):
+            return self.__xslcache[path]
+        style = Stylesheet(self, path)
+        if self.cache_stylesheets:
+            self.__xslcache[path] = style
+        return style
+    
     def applyStylesheet(self, doc, path, params = {}):
         """Apply an XSLT stylesheet to a document.
         """
         self.__validate(doc)
+        style = self.getStylesheet(path)
 
-        sdoc = self.parseFile(path)
-        style, errors = intercept.intercept(STREAMS,
-                                            libxslt.parseStylesheetDoc, sdoc)
-        if style is None or errors:
-            raise XMLError, errors + "error: can't load %s" % path
+        params = params.copy()
+        for param in params.keys():
+            if (type(params[param]) != types.InstanceType or
+                not isinstance(params[param], libxml2.xmlNode)):
+                params[param] = "'" + str(params[param]) + "'"
 
+        self.xpathctx.install()
         try:
-            params = params.copy()
-            for param in params.keys():
-                if (type(params[param]) != types.InstanceType or
-                    not isinstance(params[param], libxml2.xmlNode)):
-                    params[param] = "'" + str(params[param]) + "'"
-
-            self.xpathctx.install()
-            try:
-                result, errors = intercept.intercept(
-                    STREAMS, style.applyStylesheet, doc, params)
-            finally:
-                self.xpathctx.remove()
-
-            if result is None or errors:
-                raise XMLError, errors + "error: can't apply stylesheet"
-            return result
+            result, errors = intercept.intercept(
+                STREAMS, style.applyStylesheet, doc, params)
         finally:
-            style.freeStylesheet()
+            self.xpathctx.remove()
+
+        if result is None or errors:
+            raise XMLError, errors + "error: can't apply stylesheet"
+
+        return result
 
     def copyNode(self, src, dst):
         if src.type == "element":

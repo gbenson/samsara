@@ -57,7 +57,9 @@ if not startpoints:
     startpoints.append("/")
 
 def main():
-    spider(SamsaraServer(root), dest, startpoints, exclusions)
+    server = SamsaraServer(root)
+    server.xmlctx.cache_stylesheets = True
+    spider(server, dest, startpoints, exclusions)
 
 if timed:
     start_time = time.time()
