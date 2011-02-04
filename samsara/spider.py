@@ -1,6 +1,10 @@
 import os
+from samsara.server import SamsaraServer
 
-def spider(server, dest, startpoints, exclusions = ()):
+def spider(root, dest, startpoints = "/", exclusions = ()):
+    server = SamsaraServer(root)
+    server.xmlctx.cache_stylesheets = True
+    
     items = {}
     for path in startpoints:
         items[path] = False
