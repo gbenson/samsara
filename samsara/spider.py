@@ -1,10 +1,50 @@
+import multiprocessing
+import operator
 import os
-from samsara.server import SamsaraServer
+import samsara.server
+import sys
+
+server = None
+
+class Worker:
+    def __init__(self, root, dest):
+        self.root = root
+        self.dest = dest
+
+    def __call__(self, path):
+        global server
+        if server is None:
+            server = samsara.server.SamsaraServer(self.root)
+            server.xmlctx.cache_stylesheets = True
+
+        response = server.get(path)
+        server.auto_update = False
+        server.xmlctx.xpathctx.auto_update = False
+
+        links = [link.normalizeTo(path)
+                 for link in response.links()
+                 if link.isLocal()]
+
+        if path[-1] == "/":
+            payload = response.payload
+            if isinstance(payload, str) and payload.find("<?php") != -1:
+                path += "index.php"
+            else:
+                path += "index.html"
+        path = os.path.join(self.dest, path[1:])
+        dir = os.path.dirname(path)
+        try:
+            os.makedirs(dir)
+        except:
+            pass
+        response.writePayload(path)
+
+        return links
 
 def spider(root, dest, startpoints = "/", exclusions = ()):
-    server = SamsaraServer(root)
-    server.xmlctx.cache_stylesheets = True
-    
+    pool = multiprocessing.Pool(processes = 3)
+    worker = Worker(root, dest)
+
     items = {}
     for path in startpoints:
         items[path] = False
@@ -13,33 +53,12 @@ def spider(root, dest, startpoints = "/", exclusions = ()):
         todo = [path for path, done in items.items() if not done]
         if not todo:
             break
-
-        for path in todo:
-            items[path] = True
-            response = server.get(path)
-            server.auto_update = False
-            server.xmlctx.xpathctx.auto_update = False
-
-            links = [link.normalizeTo(path)
-                     for link in response.links()
-                     if link.isLocal()]
-
-            for link in links:
-                if not items.has_key(link):
-                    for excl in exclusions:
-                        if link[:len(excl)] == excl:
-                            break
+        for link in reduce(operator.add, pool.map(worker, todo, 1)):
+            if not items.has_key(link):
+                for excl in exclusions:
+                    if link[:len(excl)] == excl:
+                        break
                     else:
                         items[link] = False
-
-            if path[-1] == "/":
-                payload = response.payload
-                if isinstance(payload, str) and payload.find("<?php") != -1:
-                    path += "index.php"
-                else:
-                    path += "index.html"
-            path = os.path.join(dest, path[1:])
-            dir = os.path.dirname(path)
-            if not os.path.isdir(dir):
-                os.makedirs(dir)
-            response.writePayload(path)
+        for path in todo:
+            items[path] = True
