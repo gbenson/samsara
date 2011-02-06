@@ -4,22 +4,21 @@ import os
 import samsara.server
 import sys
 
-server = None
-
 class Worker:
+    server = None
+    
     def __init__(self, root, dest):
         self.root = root
         self.dest = dest
 
     def __call__(self, path):
-        global server
-        if server is None:
-            server = samsara.server.SamsaraServer(self.root)
-            server.xmlctx.cache_stylesheets = True
+        if self.server is None:
+            Worker.server = samsara.server.SamsaraServer(self.root)
+            Worker.server.xmlctx.cache_stylesheets = True
 
-        response = server.get(path)
-        server.auto_update = False
-        server.xmlctx.xpathctx.auto_update = False
+        response = self.server.get(path)
+        self.server.auto_update = False
+        self.server.xmlctx.xpathctx.auto_update = False
 
         links = [link.normalizeTo(path)
                  for link in response.links()
