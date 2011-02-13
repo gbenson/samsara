@@ -17,8 +17,9 @@ class Worker:
             Worker.server.xmlctx.cache_stylesheets = True
 
         response = self.server.get(path)
-        self.server.auto_update = False
-        self.server.xmlctx.xpathctx.auto_update = False
+        for loader in (self.server, self.server.xmlctx.xpathctx):
+            if loader.is_loaded:
+                loader.auto_update = False
 
         links = [link.normalizeTo(path)
                  for link in response.links()

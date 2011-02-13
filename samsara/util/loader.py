@@ -14,12 +14,14 @@ class Loader:
         self.prefix = prefix + "."
         self.names = []
         self.auto_update = True
+        self.is_loaded = False
 
     def updateCache(self):
         """Rescan the directory of modules and synchronize with it
         """
         if not self.auto_update:
             return
+        self.is_loaded = True
 
         # Build a list of module names which represents our current set
         names = {}
