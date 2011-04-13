@@ -1,8 +1,8 @@
 import multiprocessing
-import operator
 import os
 import samsara.server
 import sys
+import traceback
 
 class Worker:
     server = None
@@ -12,6 +12,15 @@ class Worker:
         self.dest = dest
 
     def __call__(self, path):
+        try:
+            result = self.process(path)
+            success = True
+        except:
+            result = "".join(traceback.format_exception(*sys.exc_info()))
+            success = False
+        return success, result
+
+    def process(self, path):
         if self.server is None:
             Worker.server = samsara.server.SamsaraServer(self.root)
             Worker.server.xmlctx.cache_stylesheets = True
@@ -53,12 +62,16 @@ def spider(root, dest, startpoints = "/", exclusions = ()):
         todo = [path for path, done in items.items() if not done]
         if not todo:
             break
-        for link in reduce(operator.add, pool.map(worker, todo, 1)):
-            if not items.has_key(link):
-                for excl in exclusions:
-                    if link[:len(excl)] == excl:
-                        break
-                    else:
-                        items[link] = False
+        for success, result in pool.map(worker, todo, 1):
+            if not success:
+                sys.stderr.write(result)
+                sys.exit(1)
+            for link in result:
+                if not items.has_key(link):
+                    for excl in exclusions:
+                        if link[:len(excl)] == excl:
+                            break
+                        else:
+                            items[link] = False
         for path in todo:
             items[path] = True
