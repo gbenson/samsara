@@ -55,7 +55,7 @@ class HandlerClass:
     def __updateDocument(self, path):
         doc, old_mtime, name, callback = self.docs[path]
         mtime = os.path.getmtime(path)
-        if mtime <= old_mtime:
+        if mtime == old_mtime:
             return
         if doc is not None:
             del self.docs[path]

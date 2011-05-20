@@ -52,7 +52,7 @@ class Loader:
                 # Not yet loaded
                 mtime, old_mtime = 0, -1
 
-            if mtime > old_mtime:
+            if mtime != old_mtime:
                 # Create dummy modules for parents as necessary
                 items = fullname.split(".")
                 for i in xrange(1, len(items)):
