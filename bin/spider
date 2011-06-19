@@ -55,17 +55,17 @@ for o, a in opts:
 if not startpoints:
     startpoints.append("/")
 
-def main():
-    spider(root, dest, startpoints, exclusions)
+def main(jobs):
+    spider(root, dest, startpoints, exclusions, jobs)
 
 if timed:
     start_time = time.time()
 
 if profiling:
     import profile
-    profile.run("main()", "spider.prof")
+    profile.run("main(1)", "spider.prof")
 else:
-    main()
+    main(3)
 
 if timed:
     print "Spidered in %.1f seconds" % (time.time() - start_time)

@@ -1,4 +1,3 @@
-import multiprocessing
 import os
 import samsara.server
 import sys
@@ -50,8 +49,13 @@ class Worker:
 
         return links
 
-def spider(root, dest, startpoints = "/", exclusions = ()):
-    pool = multiprocessing.Pool(processes = 3)
+def spider(root, dest, startpoints = "/", exclusions = (), jobs = 1):
+    if jobs == 1:
+        MAP = map
+    else:
+        import multiprocessing
+        pool = multiprocessing.Pool(processes = jobs)
+        MAP = lambda func, iterable: pool.map(func, iterable, 1)
     worker = Worker(root, dest)
 
     items = {}
@@ -62,7 +66,7 @@ def spider(root, dest, startpoints = "/", exclusions = ()):
         todo = [path for path, done in items.items() if not done]
         if not todo:
             break
-        for success, result in pool.map(worker, todo, 1):
+        for success, result in MAP(worker, todo):
             if not success:
                 sys.stderr.write(result)
                 sys.exit(1)
