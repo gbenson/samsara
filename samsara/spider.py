@@ -81,3 +81,6 @@ def spider(root, dest, startpoints = "/", exclusions = (), jobs = 1):
                             items[link] = False
         for path in todo:
             items[path] = True
+
+    if jobs == 1:
+        del Worker.server
