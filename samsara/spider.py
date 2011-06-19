@@ -14,6 +14,8 @@ class Worker:
         try:
             result = self.process(path)
             success = True
+        except KeyboardInterrupt:
+            raise
         except:
             result = "".join(traceback.format_exception(*sys.exc_info()))
             success = False
