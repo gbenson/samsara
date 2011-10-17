@@ -87,6 +87,7 @@ class Request:
 
         self.type = None
         self.payload = None
+        self.is_final = False
         self.implied = []
         self.may_be_compressible = False
         self.buttons = []
@@ -243,6 +244,8 @@ class SamsaraServer(loader.Loader):
             try:
                 for handler in handlers:
                     handler.handle(r)
+                    if r.is_final:
+                        break
             except Request.Redirect, e:
                 uri = str(e)
                 continue
