@@ -194,6 +194,7 @@ class SamsaraServer(loader.Loader):
         self.weakref = weakref.ref(self)
 
         self.httpserver = None
+        self.use_accelerators = True
 
     def setHTTPServer(self, httpserver):
         if httpserver is None:
@@ -243,6 +244,7 @@ class SamsaraServer(loader.Loader):
             try:
                 for handler in handlers:
                     if (self.httpserver is None
+                        and self.use_accelerators
                         and hasattr(handler, "accelerator")):
                         [accelerator] = self.handlers[handler.accelerator]
                         if accelerator.accelerate(r):

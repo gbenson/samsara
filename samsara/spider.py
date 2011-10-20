@@ -6,9 +6,10 @@ import traceback
 class Worker:
     server = None
     
-    def __init__(self, root, dest):
+    def __init__(self, root, dest, accel = True):
         self.root = root
         self.dest = dest
+        self.accel = accel
 
     def __call__(self, path):
         try:
@@ -25,6 +26,7 @@ class Worker:
         if self.server is None:
             Worker.server = samsara.server.SamsaraServer(self.root)
             Worker.server.xmlctx.cache_stylesheets = True
+            Worker.server.use_accelerators = self.accel
 
         response = self.server.get(path)
         for loader in (self.server, self.server.xmlctx.xpathctx):
@@ -51,14 +53,15 @@ class Worker:
 
         return links
 
-def spider(root, dest, startpoints = "/", exclusions = (), jobs = 1):
+def spider(root, dest, startpoints = "/", exclusions = (), jobs = 1,
+           accel = True):
     if jobs == 1:
         MAP = map
     else:
         import multiprocessing
         pool = multiprocessing.Pool(processes = jobs)
         MAP = lambda func, iterable: pool.map(func, iterable, 1)
-    worker = Worker(root, dest)
+    worker = Worker(root, dest, accel)
 
     items = {}
     for path in startpoints:
