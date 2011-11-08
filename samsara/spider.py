@@ -16,7 +16,7 @@ class Worker:
             result = self.process(path)
             success = True
         except KeyboardInterrupt:
-            raise
+            return
         except:
             result = "".join(traceback.format_exception(*sys.exc_info()))
             success = False
@@ -71,7 +71,13 @@ def spider(root, dest, startpoints = "/", exclusions = (), jobs = 1,
         todo = [path for path, done in items.items() if not done]
         if not todo:
             break
-        for success, result in MAP(worker, todo):
+        try:
+            results = MAP(worker, todo)
+        except KeyboardInterrupt:
+            if jobs != 1:
+                pool.terminate()
+            sys.exit(1)
+        for success, result in results:
             if not success:
                 sys.stderr.write(result)
                 sys.exit(1)
