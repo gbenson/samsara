@@ -12,8 +12,11 @@ from samsara.httpserver import HTTPServer
 from samsara.server import SamsaraServer
 
 interface = "127.0.0.1"
-if os.environ.get("HOSTNAME", "").startswith("mambo"):
-    interface = ""
+host = os.environ.get("HOSTNAME", "")
+for prefix in ("mambo", "monster"):
+    if host.startswith(prefix):
+        interface = ""
+        break
 port = 2420
 
 usage = """\
