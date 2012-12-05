@@ -70,7 +70,7 @@ class HandlerClass:
 
     def __str__(self):
         return "%4d %s" % (self.priority, repr(self))
-        
+
 class File:
     """A request payload that has not yet been read from disk
     """
@@ -82,7 +82,7 @@ class Request:
     """
     def __init__(self, uri):
         if not uri or uri[0] != "/":
-            raise ValueError, "URI must begin with a slash"        
+            raise ValueError, "URI must begin with a slash"
         self.uri = uri[1:]
 
         self.type = None
@@ -125,7 +125,7 @@ class Request:
         others to the spiderer.
         """
         self.implied.append("/" + link)
-            
+
     def links(self):
         """Extract all URLs from the response's body
         """
@@ -218,7 +218,7 @@ class SamsaraServer(loader.Loader):
                          if not attr.startswith("_")]
             if type(item) == types.ClassType
                and issubclass(item, HandlerClass)]
-        
+
     def moduleUnloaded(self, name):
         """Callback called when a module is unloaded
         """
