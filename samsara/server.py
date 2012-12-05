@@ -1,3 +1,4 @@
+import hashlib
 import sys
 import os
 import urlparse
@@ -170,6 +171,9 @@ class SamsaraServer(loader.Loader):
 
     def __init__(self, root):
         self.root = os.path.abspath(root)
+        self.data = os.path.join(os.environ["HOME"],
+                                 ".samsara",
+                                 hashlib.md5(self.root).hexdigest()[:8])
         for caps in (True, False):
             usercode = "samsara"
             if caps:
@@ -207,6 +211,11 @@ class SamsaraServer(loader.Loader):
             return self.__httpserver()
 
     httpserver = property(getHTTPServer, setHTTPServer)
+
+    def datadir(self, type, path):
+        assert type in ("cache", "config")
+        assert not os.sep in path
+        return os.path.join(self.data, type, path)
 
     def moduleLoaded(self, name, module):
         """Callback called when a module is (re)loaded
