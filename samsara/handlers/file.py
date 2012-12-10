@@ -19,6 +19,4 @@ class FileHandler(server.HandlerClass):
         if r.type == "text/xml":
             r.payload = self.xmlctx.parseFile(path)
         else:
-            if r.type == "application/x-sh":
-                r.type = "text/plain"
             r.payload = server.File(path)

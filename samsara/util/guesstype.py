@@ -3,9 +3,11 @@ import mimetypes
 # mimetypes doesn't know where Red Hat put the MIME types file
 mimetypes.init(["/etc/mime.types"])
 
-encodings_map = {None:       None,
-                 "gzip":     "application/x-gzip",
+encodings_map = {"gzip":     "application/x-gzip",
                  "compress": "application/x-compress"}
+
+mimetypes_map = {"application/x-sh":         "text/plain",
+                 "image/vnd.microsoft.icon": "image/x-icon"}
 
 def guessType(path):
     """Guess the MIME type of a file based on its filename or URL.
@@ -14,7 +16,9 @@ def guessType(path):
     'application/x-gzip' for the file 'foo.ps.gz'.
     """
     mimetype, encoding = mimetypes.guess_type(path)
-    return encodings_map[encoding] or mimetype or "text/plain"
+    return (encodings_map.get(encoding, None)
+            or mimetypes_map.get(mimetype, mimetype)
+            or "text/plain")
 
 def guessBaseType(path):
     """Guess the MIME type of a file based on its filename or URL.
