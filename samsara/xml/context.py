@@ -183,8 +183,12 @@ class XPathContext(loader.Loader):
             # Wrap the arguments where necessary
             ctx, nodesets = args[0], args[1:]
             ctx = libxslt.xpathParserContext(_obj=ctx)
-            nodesets = map(lambda s: map(lambda n: libxml2.xmlNode(_obj=n), s),
-                           nodesets)
+            nodesets = map(self.__wrap_nodeset, nodesets)
             
             # Go go go
             return apply(func, [ctx] + nodesets)
+
+        def __wrap_nodeset(self, nodeset):
+            if isinstance(nodeset, str):
+                return nodeset
+            return [libxml2.xmlNode(_obj = node) for node in nodeset]
