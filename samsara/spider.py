@@ -86,8 +86,8 @@ def spider(root, dest, startpoints = "/", exclusions = (), jobs = 1,
                     for excl in exclusions:
                         if link[:len(excl)] == excl:
                             break
-                        else:
-                            items[link] = False
+                    else:
+                        items[link] = False
         for path in todo:
             items[path] = True
 
