@@ -72,4 +72,7 @@ else:
     main(3)
 
 if timed:
-    print "Spidered in %.1f seconds" % (time.time() - start_time)
+    print "%s: %s: spidered in %.1f seconds." % (
+        os.path.basename(sys.argv[0]),
+        os.path.basename(dest),
+        time.time() - start_time)
