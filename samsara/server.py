@@ -41,6 +41,11 @@ class HandlerClass:
     def xmlctx(self):
         return self.server.xmlctx
 
+    def get_handler(self, name):
+        [handler] = self.server.handlers[name]
+        assert self.priority < handler.priority
+        return handler
+
     def registerDocument(self, path, name = None, callback = None):
         """Register an XML document to maintain a cached copy of.
         """
