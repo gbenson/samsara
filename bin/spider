@@ -15,6 +15,7 @@ startpoints = []
 exclusions = []
 accel = True
 timed = profiling = False
+jobs = 1
 
 usage = """\
 Usage: spider [OPTION] ROOT DEST
@@ -30,7 +31,7 @@ Usage: spider [OPTION] ROOT DEST
 try:
     opts, args = getopt(
         sys.argv[1:],
-        "s:e:tp",
+        "s:e:tpj:",
         ["help", "startat=", "exclude=", "no-accel", "time", "profile"])
 except GetoptError:
     print usage
@@ -54,12 +55,16 @@ for o, a in opts:
     if o in ("-t", "--timed"):
         timed = True
     if o in ("-p", "--profile"):
+        assert jobs == 1
         profiling = True
+    if o == "-j":
+        assert not profiling
+        jobs = int(a)
 
 if not startpoints:
     startpoints.append("/")
 
-def main(jobs):
+def main():
     spider(root, dest, startpoints, exclusions, jobs, accel)
 
 if timed:
@@ -67,12 +72,16 @@ if timed:
 
 if profiling:
     import profile
-    profile.run("main(1)", "spider.prof")
+    profile.run("main()", "spider.prof")
 else:
-    main(3)
+    main()
 
 if timed:
-    print "%s: %s: spidered in %.1f seconds." % (
+    msg = "%s: %s: spidered in %.1f seconds" % (
         os.path.basename(sys.argv[0]),
         os.path.basename(dest),
         time.time() - start_time)
+    if jobs != 1:
+        msg += " using %d workers" % jobs
+    msg += "."
+    print msg
