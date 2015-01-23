@@ -255,14 +255,17 @@ class SamsaraServer(loader.Loader):
             uris[uri] = True
 
             r = Request(uri)
+
+            if self.httpserver is None and self.use_accelerators:
+                for handler in handlers:
+                    accel = getattr(handler, "accelerator", None)
+                    if accel is not None:
+                        [accel] = self.handlers[accel]
+                        if accel.accelerate(r):
+                            return r
+
             try:
                 for handler in handlers:
-                    if (self.httpserver is None
-                        and self.use_accelerators
-                        and hasattr(handler, "accelerator")):
-                        [accelerator] = self.handlers[handler.accelerator]
-                        if accelerator.accelerate(r):
-                            break
                     handler.handle(r)
             except Request.Redirect, e:
                 uri = str(e)
