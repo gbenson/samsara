@@ -257,12 +257,15 @@ class SamsaraServer(loader.Loader):
             r = Request(uri)
 
             if self.httpserver is None and self.use_accelerators:
+                accelerators = {}
                 for handler in handlers:
                     accel = getattr(handler, "accelerator", None)
                     if accel is not None:
-                        [accel] = self.handlers[accel]
-                        if accel.accelerate(r):
-                            return r
+                        accelerators[accel] = True
+                for accel in accelerators:
+                    [accel] = self.handlers[accel]
+                    if accel.accelerate(r):
+                        return r
 
             try:
                 for handler in handlers:
