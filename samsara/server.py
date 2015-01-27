@@ -1,3 +1,4 @@
+import ConfigParser
 import hashlib
 import sys
 import os
@@ -176,6 +177,7 @@ class SamsaraServer(loader.Loader):
 
     def __init__(self, root):
         self.root = os.path.abspath(root)
+        assert os.path.isdir(self.root)
         self.data = os.path.join(os.environ["HOME"],
                                  ".samsara",
                                  hashlib.md5(self.root).hexdigest()[:8])
@@ -186,6 +188,11 @@ class SamsaraServer(loader.Loader):
             usercode = os.path.join(root, usercode)
             if os.path.isdir(usercode):
                 break
+
+        self.config = ConfigParser.ConfigParser()
+        inipath = os.path.join(usercode, "samsara.ini")
+        if os.path.exists(inipath):
+            self.config.read(inipath)
 
         common_dir = os.path.join(usercode, "common")
         if common_dir not in sys.path:

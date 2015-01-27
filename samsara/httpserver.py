@@ -15,10 +15,10 @@ class HTTPServer(SocketServer.TCPServer):
 
     allow_reuse_address = 1
 
-    def __init__(self, host, port, samsara):
+    def __init__(self, addr, samsara):
         """Constructor: may be extended, do not override.
         """
-        SocketServer.TCPServer.__init__(self, (host,port), self.RequestHandler)
+        SocketServer.TCPServer.__init__(self, addr, self.RequestHandler)
         self.samsara = samsara
         samsara.httpserver = self
 
