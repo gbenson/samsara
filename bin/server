@@ -9,6 +9,7 @@ if samsara_dir not in sys.path:
 
 from samsara.httpserver import HTTPServer
 from samsara.server import SamsaraServer
+import glob
 import socket
 
 hostname = socket.gethostbyaddr(socket.gethostname())[0]
@@ -19,11 +20,16 @@ else:
 
 roots = sys.argv[1:]
 if not roots:
-    print >>sys.stderr, "usage: %s ROOT" # XXX
+    print >>sys.stderr, "usage: %s ROOT..."
     sys.exit(1)
+if len(roots) == 1:
+    paths = glob.glob(os.path.join(roots[0], "*", "[Ss]amsara"))
+    if paths:
+        roots = map(os.path.dirname, paths)
 
-servers = map(SamsaraServer, roots)
-assert len(servers) == 1 # XXX
-for server in servers:
+for root, needs_fork in zip(roots, [True] * (len(roots) - 1) + [False]):
+    if needs_fork and os.fork():
+        continue
+    server = SamsaraServer(root)
     port = int(server.config.get("httpserver", "port"))
     HTTPServer((host, port), server).serve_forever()
