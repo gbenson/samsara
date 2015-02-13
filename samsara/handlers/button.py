@@ -36,8 +36,13 @@ class SamsaraButton(server.HandlerClass):
             return
 
         payload = r.getPayload()
-        start = payload.lower().find("<body")
-        if start < 0:
+        # XXX Hack to make buttons disappear
+        # XXX on inauspicious.org mobile site.
+        for what in ('id="pagewrap"', "<body"):
+            start = payload.lower().find(what)
+            if start >= 0:
+                break
+        else:
             return
         start = payload.find(">", start)
         start += 1
