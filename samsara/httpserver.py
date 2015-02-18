@@ -58,8 +58,3 @@ class HTTPServer(SocketServer.TCPServer):
                                                                tb))
 
                 self.sendResponse(code, "text/plain", title + "\n\n" + body)
-
-        def log_message(self, *args):
-            """Log an arbitrary message
-            """
-            pass
