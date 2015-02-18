@@ -58,6 +58,7 @@ for server in servers:
     signal.signal(signal.SIGTERM, sys.exit)
     lock_logfile(os.path.join(server.samsara.data, "lock"))
     capture_output(os.path.join(server.samsara.data, "log"))
-    print "Serving on", server.server_address
+    print "%s serving on %s" % (server.RequestHandler.server_version,
+                                server.server_address)
     server.serve_forever()
 os._exit(0)
