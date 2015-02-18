@@ -9,7 +9,9 @@ if samsara_dir not in sys.path:
 
 from samsara.httpserver import HTTPServer
 from samsara.server import SamsaraServer
+import atexit
 import glob
+import signal
 import socket
 
 hostname = socket.gethostbyaddr(socket.gethostname())[0]
@@ -27,10 +29,11 @@ if len(roots) == 1:
     if paths:
         roots = map(os.path.dirname, paths)
 
+def lock_logfile(path):
+    atexit.register(os.unlink, path)
+    os.close(os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0600))
+
 def capture_output(path):
-    dir = os.path.dirname(path)
-    if not os.path.exists(dir):
-        os.makedirs(dir)
     fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0600)
     for fp in sys.stdout, sys.stderr:
         fp.flush()
@@ -38,14 +41,22 @@ def capture_output(path):
     # Disable stdout buffering
     sys.stdout = os.fdopen(sys.stdout.fileno(), "w", 0)
 
-for server in [HTTPServer((host,
-                           int(server.config.get("httpserver", "port"))),
-                          server) for server in map(SamsaraServer, roots)]:
+# Do as much setup as we can outside the forking part
+servers = [HTTPServer((host,
+                       int(server.config.get("httpserver", "port"))),
+                      server) for server in map(SamsaraServer, roots)]
+for server in servers:
+    if not os.path.exists(server.samsara.data):
+        os.makedirs(server.samsara.data)
+
+for server in servers:
     if os.fork():
         continue
     os.setsid()
     if os.fork():
         os._exit(0)
+    signal.signal(signal.SIGTERM, sys.exit)
+    lock_logfile(os.path.join(server.samsara.data, "lock"))
     capture_output(os.path.join(server.samsara.data, "log"))
     print "Serving on", server.server_address
     server.serve_forever()
