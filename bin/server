@@ -38,11 +38,15 @@ def capture_output(path):
     # Disable stdout buffering
     sys.stdout = os.fdopen(sys.stdout.fileno(), "w", 0)
 
-for root, needs_fork in zip(roots, [True] * (len(roots) - 1) + [False]):
-    if needs_fork and os.fork():
+for server in [HTTPServer((host,
+                           int(server.config.get("httpserver", "port"))),
+                          server) for server in map(SamsaraServer, roots)]:
+    if os.fork():
         continue
-    server = SamsaraServer(root)
-    port = int(server.config.get("httpserver", "port"))
-    webserver = HTTPServer((host, port), server)
-    capture_output(os.path.join(server.data, "log"))
-    webserver.serve_forever()
+    os.setsid()
+    if os.fork():
+        os._exit(0)
+    capture_output(os.path.join(server.samsara.data, "log"))
+    print "Serving on", server.server_address
+    server.serve_forever()
+os._exit(0)
