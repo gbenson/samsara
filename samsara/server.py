@@ -176,7 +176,7 @@ class SamsaraServer(loader.Loader):
     """
 
     def __init__(self, root):
-        self.root = os.path.abspath(root)
+        self.root = os.path.realpath(root)
         assert os.path.isdir(self.root)
         self.data = os.path.join(os.environ["HOME"],
                                  ".samsara",

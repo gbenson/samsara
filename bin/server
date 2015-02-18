@@ -27,9 +27,22 @@ if len(roots) == 1:
     if paths:
         roots = map(os.path.dirname, paths)
 
+def capture_output(path):
+    dir = os.path.dirname(path)
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0600)
+    for fp in sys.stdout, sys.stderr:
+        fp.flush()
+        os.dup2(fd, fp.fileno())
+    # Disable stdout buffering
+    sys.stdout = os.fdopen(sys.stdout.fileno(), "w", 0)
+
 for root, needs_fork in zip(roots, [True] * (len(roots) - 1) + [False]):
     if needs_fork and os.fork():
         continue
     server = SamsaraServer(root)
     port = int(server.config.get("httpserver", "port"))
-    HTTPServer((host, port), server).serve_forever()
+    webserver = HTTPServer((host, port), server)
+    capture_output(os.path.join(server.data, "log"))
+    webserver.serve_forever()
