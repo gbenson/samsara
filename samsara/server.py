@@ -7,7 +7,6 @@ import posixpath
 import operator
 import types
 import weakref
-from samsara.util import compress
 from samsara.util import extractlinks
 from samsara.util import loader
 from samsara.xml import context
@@ -95,7 +94,6 @@ class Request:
         self.type = None
         self.payload = None
         self.implied = []
-        self.may_be_compressible = False
         self.buttons = []
 
     def __del__(self):
@@ -120,12 +118,8 @@ class Request:
     def writePayload(self, path):
         if isinstance(self.payload, File):
             os.link(self.payload.path, path)
-            if self.may_be_compressible:
-                compress.attempt_compression(path)
         else:
             open(path, "w").write(self.payload)
-            if self.may_be_compressible:
-                compress.attempt_compression(path, self.payload)
 
     def add_implied(self, link):
         """Allow the existence of one page to imply the existence of
