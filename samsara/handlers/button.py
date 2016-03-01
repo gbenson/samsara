@@ -11,12 +11,12 @@ class SamsaraButton(server.HandlerClass):
             html.extend(
                 ('<div style="%s;">' % "; ".join(
                         ("position: absolute",
-                         "top: %dpx" % (3 + 18 * index),
-                         "right: 3px",
+                         "top: %dpx" % (8 + 18 * index),
+                         "right: 7px",
                          "width: 16px",
                          "height: 16px",
-                         "border: 2px solid white",
-                         "background-color: #eee",
+                         "opacity: 0.25",
+                         "background-color: #888",
                          "font-family: arial, helvetica, sans-serif",
                          "font-size: 14px",
                          "font-weight: bold",
