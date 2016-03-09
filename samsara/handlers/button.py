@@ -36,19 +36,7 @@ class SamsaraButton(server.HandlerClass):
             return
 
         payload = r.getPayload()
-        # XXX Hack to make buttons disappear
-        # XXX on inauspicious.org mobile site.
-        for what in ('id="pagewrap"', "<body"):
-            start = payload.lower().find(what)
-            if start >= 0:
-                break
-        else:
+        index = payload.find("</body>")
+        if index < 0:
             return
-        start = payload.find(">", start)
-        start += 1
-        limit = start
-        while payload[limit].isspace():
-            limit += 1
-        sep = payload[start:limit]
-        r.payload = sep.join(
-            (payload[:start],) + self.html(r) + (payload[limit:],))
+        r.payload = payload[:index] + "\n".join(self.html(r)) + payload[index:]
