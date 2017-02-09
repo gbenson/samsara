@@ -31,7 +31,11 @@ if len(roots) == 1:
 
 def lock_logfile(path):
     atexit.register(os.unlink, path)
-    os.close(os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0600))
+    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0600)
+    try:
+        os.write(fd, str(os.getpid()) + "\n")
+    finally:
+        os.close(fd)
 
 def capture_output(path):
     fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0600)
@@ -48,6 +52,15 @@ servers = [HTTPServer((host,
 for server in servers:
     if not os.path.exists(server.samsara.data):
         os.makedirs(server.samsara.data)
+    server.lockfile = os.path.join(server.samsara.data, "lock")
+    if not os.path.exists(server.lockfile):
+        continue
+    with open(server.lockfile) as fp:
+        pid = int(fp.read().strip())
+    executable = os.path.realpath("/proc/%d/exe" % pid)
+    if executable.find("python") == -1:
+        print "warning: removing stale lockfile", server.lockfile
+        os.unlink(server.lockfile)
 
 for server in servers:
     if os.fork():
@@ -56,7 +69,7 @@ for server in servers:
     if os.fork():
         os._exit(0)
     signal.signal(signal.SIGTERM, sys.exit)
-    lock_logfile(os.path.join(server.samsara.data, "lock"))
+    lock_logfile(server.lockfile)
     capture_output(os.path.join(server.samsara.data, "log"))
     print "%s serving on %s" % (server.RequestHandler.server_version,
                                 server.server_address)
