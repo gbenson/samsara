@@ -100,8 +100,12 @@ class Request:
         if hasattr(self, "type") and self.type == "text/xml":
             self.payload.freeDoc()
 
-    def addButton(self, *button):
-        self.buttons.insert(0, button)
+    def addButton(self, text, href, position=None):
+        button = text, href
+        if position is None:
+            self.buttons.append(button)
+        else:
+            self.buttons.insert(0, button)
 
     class Redirect(Exception):
         pass
