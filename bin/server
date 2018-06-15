@@ -15,7 +15,7 @@ import signal
 import socket
 
 hostname = socket.gethostbyaddr(socket.gethostname())[0]
-if hostname == "blade.nx":
+if hostname.endswith(".nx"):
     host = ""
 else:
     host = "127.0.0.1"
