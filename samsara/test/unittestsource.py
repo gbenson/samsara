@@ -14,13 +14,21 @@ test_dir = os.path.join(samsara_dir, "samsara", "test", "sources")
 # libxml2 trims long lines in debug dumps, so we try to match it
 debug_trim_re = re.compile("^(\s*\w+?=.{40}).*$", re.MULTILINE)
 
+class FakeServer(object):
+    def __init__(self, root):
+        self.root = os.path.realpath(root)
+        self.xmlctx = context.XMLContext()
+
+    def __call__(self):
+        return self
+
 class TestCase(unittest.TestCase):
     """Base class for all data-sourcing handler testcases
     """
 
     def setUp(self):
         self.dir = os.path.join(test_dir, self.dir)
-        self.handler = self.handler(self.dir, context.XMLContext())
+        self.handler = self.handler(FakeServer(self.dir))
 
     def checkSuccess(self, uri, type, expected):
         """Apply a series of tests to what should be a successful request

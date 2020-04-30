@@ -50,7 +50,7 @@ class HTTPServerTestCase(unittest.TestCase):
         s = TestSamsaraServer()
         while 1:
             try:
-                self.httpd = httpserver.HTTPServer(self.host, self.port, s)
+                self.httpd = httpserver.HTTPServer((self.host, self.port), s)
                 break
 
             except socket.error:
