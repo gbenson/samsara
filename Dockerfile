@@ -12,4 +12,4 @@ FROM base
 COPY --from=builder /venv /venv
 COPY --chmod=755 docker/entrypoint.sh /usr/bin/samsara
 ENTRYPOINT ["samsara"]
-CMD ["samsara-test"]
+CMD ["unittest"]

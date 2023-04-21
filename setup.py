@@ -10,21 +10,17 @@ import glob
 import os
 
 class InstallScriptsCommand(install_scripts):
-    """Rename scripts with "samsara-" prefixes."""
+    """Strip path-modification preambles from scripts."""
     def run(self):
         install_scripts.run(self)
-        new_outfiles = []
-        for orig_filename in self.get_outputs():
-            dirname, basename = os.path.split(orig_filename)
-            basename = {"unittest": "test"}.get(basename, basename)
-            basename = "samsara-" + basename
-            log.info("renaming %s to %s", orig_filename, basename)
-            filename = os.path.join(dirname, basename)
-            if not self.dry_run:
-                os.link(orig_filename, filename)
-                os.unlink(orig_filename)
-            new_outfiles.append(filename)
-        self.outfiles = new_outfiles
+        if self.dry_run:
+            return
+        for filename in self.get_outputs():
+            with open(filename) as fp:
+                lines = fp.readlines()
+            lines[1:lines.index("### end of preamble\n") + 1] = []
+            with open(filename, "w") as fp:
+                fp.writelines(lines)
 
 setup(
     name="samsara",

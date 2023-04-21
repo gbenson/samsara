@@ -9,8 +9,10 @@ if samsara_dir not in sys.path:
     sys.path.insert(0, samsara_dir)
 ### end of preamble
 
-import unittest
 import glob
+import os
+import unittest
+import samsara.test as samsara_test
 
 class TestLoader(unittest.TestLoader):
     """Load tests according to various criteria
@@ -25,10 +27,10 @@ class TestLoader(unittest.TestLoader):
         """
         if module.__name__ != "__main__":
             return unittest.TestLoader.loadTestsFromModule(self, module)
+        samsara_test_dir = os.path.dirname(samsara_test.__file__)
         return self.loadTestsFromNames(
             map(lambda p: os.path.split(p)[1][5:-3],
-                glob.glob(os.path.join(samsara_dir, "samsara",
-                                       "test", "test_*.py"))),
+                glob.glob(os.path.join(samsara_test_dir, "test_*.py"))),
             module)
 
     def loadTestsFromNames(self, names, module=None):
