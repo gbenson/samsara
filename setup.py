@@ -26,8 +26,10 @@ setup(
     name="samsara",
     version="0.1",
     packages=find_packages(),
+    package_data={"samsara": ["samsara/test/sources"]},
+    include_package_data=True,
     scripts=list(sorted(glob.glob(os.path.join("bin", "*")))),
     cmdclass={
-        'install_scripts': InstallScriptsCommand,
+        "install_scripts": InstallScriptsCommand,
     },
 )
