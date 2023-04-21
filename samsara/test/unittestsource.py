@@ -8,8 +8,7 @@ import time
 from samsara.util import intercept
 from samsara.xml import context
 
-samsara_dir = os.path.split(os.path.split(os.path.abspath(sys.argv[0]))[0])[0]
-test_dir = os.path.join(samsara_dir, "samsara", "test", "sources")
+test_dir = os.path.join(os.path.dirname(__file__), "sources")
 
 # libxml2 trims long lines in debug dumps, so we try to match it
 debug_trim_re = re.compile("^(\s*\w+?=.{40}).*$", re.MULTILINE)
