@@ -1,7 +1,11 @@
 #!/bin/sh
 
-entry="$1"
-shift
+if [ "$(echo $@)" = "server" ]; then
+  entry=help
+else
+  entry="$1"
+  shift
+fi
 
 case "$entry" in
   test)
