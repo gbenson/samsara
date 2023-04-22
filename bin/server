@@ -22,9 +22,14 @@ if hostname.endswith(".nx"):
 else:
     host = "127.0.0.1"
 
+in_docker = os.getpid() == 1
+
 roots = sys.argv[1:]
 if not roots:
-    print >>sys.stderr, "usage: %s ROOT..."
+    msg = "Usage: server ROOT"
+    if not in_docker:
+        msg += "..."
+    print >>sys.stderr, msg
     sys.exit(1)
 if len(roots) == 1:
     paths = glob.glob(os.path.join(roots[0], "*", "[Ss]amsara"))
@@ -52,7 +57,6 @@ servers = [HTTPServer((host,
                        int(server.config.get("httpserver", "port"))),
                       server) for server in map(SamsaraServer, roots)]
 
-in_docker = os.getpid() == 1
 if in_docker:
     [server] = servers
     server.serve_forever()
