@@ -22,6 +22,11 @@ class HTTPServer(SocketServer.TCPServer):
         self.samsara = samsara
         samsara.httpserver = self
 
+    def serve_forever(self):
+        print "%s serving on %s" % (self.RequestHandler.server_version,
+                                    self.server_address)
+        SocketServer.TCPServer.serve_forever(self)
+
     class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         """HTTP request handler for the Samsara HTTP server.
         """
