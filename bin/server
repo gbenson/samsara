@@ -51,6 +51,13 @@ def capture_output(path):
 servers = [HTTPServer((host,
                        int(server.config.get("httpserver", "port"))),
                       server) for server in map(SamsaraServer, roots)]
+
+in_docker = os.getpid() == 1
+if in_docker:
+    [server] = servers
+    server.serve_forever()
+    sys.exit()
+
 for server in servers:
     if not os.path.exists(server.samsara.data):
         os.makedirs(server.samsara.data)
