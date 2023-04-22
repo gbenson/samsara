@@ -13,16 +13,14 @@ import atexit
 import glob
 import os
 import signal
-import socket
 import sys
 
-hostname = socket.gethostbyaddr(socket.gethostname())[0]
-if hostname.endswith(".nx"):
+in_docker = os.getpid() == 1
+
+if in_docker:
     host = ""
 else:
     host = "127.0.0.1"
-
-in_docker = os.getpid() == 1
 
 roots = sys.argv[1:]
 if not roots:
