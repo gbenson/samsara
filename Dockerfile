@@ -11,5 +11,6 @@ RUN sh docker/build_wheel.sh
 FROM base
 COPY --from=builder /venv /venv
 COPY --chmod=755 docker/entrypoint.sh /usr/bin/samsara
+COPY example ./example
 EXPOSE 2420
 ENTRYPOINT ["samsara"]
