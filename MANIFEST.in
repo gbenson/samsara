@@ -1,1 +1,2 @@
+recursive-include samsara/handlers *.xsl
 recursive-include samsara/test/sources *

@@ -28,7 +28,7 @@ class SamsaraHandler(server.HandlerClass):
         if not r.uri.startswith(self.prefix):
             r.addButton("S", "/samsara/", 0)
             return
-        uri = r.uri[len(self.prefix):]
+        uri = r.uri[len(self.prefix):].rstrip("?")
 
         doc = libxml2.newDoc("1.0")
         page = doc.newChild(None, "page", None)
