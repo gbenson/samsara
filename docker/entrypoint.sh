@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ "$(echo $@)" = "server" ]; then
+if [ $# = 0 ]; then
   entry=help
 else
   entry="$1"

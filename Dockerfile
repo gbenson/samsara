@@ -13,4 +13,3 @@ COPY --from=builder /venv /venv
 COPY --chmod=755 docker/entrypoint.sh /usr/bin/samsara
 EXPOSE 2420
 ENTRYPOINT ["samsara"]
-CMD ["server"]
