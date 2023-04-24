@@ -169,6 +169,17 @@ class Link:
         slash = ["", "/"][path != "/" and path[-1] == "/"]
         return posixpath.normpath(path) + slash
 
+class SamsaraConfigParser(ConfigParser.ConfigParser):
+    """Configuration file parser
+    """
+
+    def set_default(self, section, option, value):
+        if self.has_option(section, option):
+            return
+        if not self.has_section(section):
+            self.add_section(section)
+        self.set(section, option, str(value))
+
 class SamsaraServer(loader.Loader):
     """Serve pages
     """
@@ -187,10 +198,11 @@ class SamsaraServer(loader.Loader):
             if os.path.isdir(usercode):
                 break
 
-        self.config = ConfigParser.ConfigParser()
+        self.config = SamsaraConfigParser()
         inipath = os.path.join(usercode, "samsara.ini")
         if os.path.exists(inipath):
             self.config.read(inipath)
+        self.config.set_default("httpserver", "port", 2420)
 
         common_dir = os.path.join(usercode, "common")
         if common_dir not in sys.path:
