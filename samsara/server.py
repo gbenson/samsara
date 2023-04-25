@@ -121,9 +121,12 @@ class Request:
 
     def writePayload(self, path):
         if isinstance(self.payload, File):
-            os.link(self.payload.path, path)
-        else:
-            open(path, "w").write(self.payload)
+            try:
+                os.link(self.payload.path, path)
+                return
+            except OSError:
+                pass
+        open(path, "w").write(self.getPayload())
 
     def add_implied(self, link):
         """Allow the existence of one page to imply the existence of
